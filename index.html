@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>U-Doc Digital · Evaluation der Urteilsfähigkeit</title>
+  <style>
+    /* ============================================================
+       1. CSS-VARIABLEN
+       ============================================================ */
+    :root {
+      --color-primary:       #0D2B55;
+      --color-accent:        #028090;
+      --color-accent-light:  #e6f4f6;
+      --color-amber:         #E8A33D;
+      --color-amber-light:   #fdf3e3;
+      --color-gray:          #64748B;
+      --color-gray-light:    #f1f5f9;
+      --color-nb:            #6D5BA6;
+      --color-nb-light:      #f0edf9;
+      --color-bg:            #F5F7FA;
+      --color-card:          #ffffff;
+      --color-border:        #CBD5E1;
+      --color-text:          #1e293b;
+      --color-text-muted:    #64748B;
+      --color-open:          #E2E8F0;
+      --color-success:       #028090;
+      --radius:              8px;
+      --radius-sm:           4px;
+      --shadow:              0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md:           0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+      --font-sans:           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono:           ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+      --spacing-xs:          4px;
+      --spacing-sm:          8px;
+      --spacing-md:          16px;
+      --spacing-lg:          24px;
+      --spacing-xl:          32px;
+    }
+
+    /* ============================================================
+       2. GRUND-LAYOUT
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Kopfzeile */
+    #app-header {
+      background: var(--color-primary);
+      color: #fff;
+      padding: 0 var(--spacing-lg);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    #app-header .logo {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    #app-header .logo span {
+      opacity: 0.6;
+      font-weight: 400;
+    }
+    #header-meta {
+      display: flex;
+      gap: var(--spacing-lg);
+      font-size: 13px;
+      opacity: 0.85;
+      overflow: hidden;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    #header-meta .meta-item {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      white-space: nowrap;
+    }
+    #header-meta .meta-label {
+      opacity: 0.65;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Schriftgrössen-Steuerung (rechte obere Ecke) */
+    #fontsize-controls {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    #fontsize-controls .fs-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-right: 4px;
+      white-space: nowrap;
+    }
+    .fs-btn {
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      line-height: 1;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, opacity 0.15s;
+    }
+    .fs-btn:hover { background: rgba(255,255,255,0.22); }
+    .fs-btn:disabled { opacity: 0.30; cursor: default; }
+    .fs-btn:disabled:hover { background: rgba(255,255,255,0.10); }
+    .fs-btn-minus { font-size: 13px; }
+    .fs-btn-reset { font-size: 13px; }
+    .fs-btn-plus  { font-size: 17px; }
+
+    /* Haupt-Layout: zwei Spalten */
+    #app-layout {
+      display: flex;
+      height: calc(100vh - 56px);
+      overflow: hidden;
+    }
+    #main-panel {
+      flex: 0 0 60%;
+      overflow-y: auto;
+      padding: var(--spacing-lg);
+    }
+    #live-panel {
+      flex: 0 0 40%;
+      border-left: 1px solid var(--color-border);
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #live-panel-header {
+      padding: var(--spacing-md) var(--spacing-lg);
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      background: #fff;
+    }
+    #live-panel-header h3 {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+    #live-panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    #live-panel-footer {
+      padding: var(--spacing-md);
+      border-top: 1px solid var(--color-border);
+      flex-shrink: 0;
+    }
+
+    /* Karten */
+    .card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow);
+    }
+    .card + .card { margin-top: var(--spacing-md); }
+
+    h1, h2, h3, h4 { color: var(--color-primary); }
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: var(--spacing-md); }
+    h2 { font-size: 18px; font-weight: 600; margin-bottom: var(--spacing-sm); }
+    h3 { font-size: 15px; font-weight: 600; margin-bottom: var(--spacing-sm); }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+    }
+
+    .definition-text {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+      margin-bottom: var(--spacing-md);
+    }
+
+    /* ============================================================
+       3. KOMPONENTEN
+       ============================================================ */
+
+    /* Formularelemente */
+    .form-group {
+      margin-bottom: var(--spacing-md);
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--color-primary);
+    }
+    .form-group label .required-star {
+      color: #e53e3e;
+      margin-left: 2px;
+    }
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      color: var(--color-text);
+      background: #fff;
+      transition: border-color 0.15s;
+      outline: none;
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(2,128,144,0.12);
+    }
+    input.error, textarea.error {
+      border-color: #e53e3e;
+    }
+    .field-error {
+      font-size: 12px;
+      color: #e53e3e;
+      margin-top: 4px;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .form-hint {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--color-accent);
+      color: #fff;
+      border-color: var(--color-accent);
+    }
+    .btn-primary:hover { background: #026e7c; }
+    .btn-secondary {
+      background: #fff;
+      color: var(--color-primary);
+      border-color: var(--color-border);
+    }
+    .btn-secondary:hover { background: var(--color-bg); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-text-muted);
+      border-color: transparent;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+    .btn-ghost:hover { background: var(--color-bg); color: var(--color-text); }
+    .btn-sm { padding: 5px 12px; font-size: 13px; }
+    .btn-full { width: 100%; justify-content: center; }
+
+    /* Navigationsleiste */
+    .nav-bar {
+      display: flex;
+      gap: var(--spacing-sm);
+      align-items: center;
+      margin-top: var(--spacing-lg);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--color-border);
+    }
+    .nav-bar .spacer { flex: 1; }
+
+    /* Fortschrittsanzeige */
+    .progress-counter {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-bottom: var(--spacing-md);
+    }
+    .breadcrumb-sep { opacity: 0.4; }
+
+    /* Optionsschalter (3 Optionen) */
+    .option-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+    }
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: 12px 16px;
+      border: 1px solid var(--color-border);
+      border-left-width: 4px;
+      border-radius: var(--radius-sm);
+      background: #fff;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text);
+      transition: background 0.12s, border-color 0.12s;
+      border-left-color: var(--color-border);
+      width: 100%;
+    }
+    .option-btn:hover {
+      background: var(--color-bg);
+    }
+    .option-btn.selected-unauffaellig {
+      border-left-color: var(--color-accent);
+      background: var(--color-accent-light);
+    }
+    .option-btn.selected-beeintraechtigt {
+      border-left-color: var(--color-amber);
+      background: var(--color-amber-light);
+    }
+    .option-btn.selected-nichtbeurteilbar {
+      border-left-color: var(--color-gray);
+      background: var(--color-gray-light);
+    }
+    .option-indicator {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--color-border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .option-btn.selected-unauffaellig .option-indicator {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+    .option-btn.selected-beeintraechtigt .option-indicator {
+      background: var(--color-amber);
+      border-color: var(--color-amber);
+    }
+    .option-btn.selected-nichtbeurteilbar .option-indicator {
+      background: var(--color-nb);
+      border-color: var(--color-nb);
+    }
+    .option-indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fff;
+      display: none;
+    }
+    .option-btn[class*="selected-"] .option-indicator-dot { display: block; }
+
+    /* Zusammenfassungsskala (5 Optionen) */
+    .summary-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: var(--spacing-md);
+    }
+    .summary-scale-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: 10px 14px;
+      border: 1px solid var(--color-border);
+      border-left-width: 4px;
+      border-left-color: var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text);
+      transition: background 0.12s;
+      width: 100%;
+      text-align: left;
+    }
+    .summary-scale-btn:hover { background: var(--color-bg); }
+    .summary-scale-btn.sel-unauffaellig    { border-left-color: var(--color-accent); background: var(--color-accent-light); }
+    .summary-scale-btn.sel-leicht          { border-left-color: #6db8c0; background: #edf7f8; }
+    .summary-scale-btn.sel-mittelgradig    { border-left-color: var(--color-amber); background: var(--color-amber-light); }
+    .summary-scale-btn.sel-schwer          { border-left-color: #c0392b; background: #fdf0ef; }
+    .summary-scale-btn.sel-nichtbeurteilbar{ border-left-color: var(--color-nb); background: var(--color-nb-light); }
+
+    /* Bereichsblock / Info-Box */
+    .info-box {
+      border-left: 3px solid var(--color-accent);
+      background: var(--color-accent-light);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 13px;
+      color: var(--color-primary);
+      margin-top: var(--spacing-md);
+    }
+
+    /* Leitfragen (kollabierbar) */
+    details.guiding-questions {
+      margin-top: var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+    details.guiding-questions summary {
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-accent);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    details.guiding-questions summary::-webkit-details-marker { display: none; }
+    details.guiding-questions[open] summary { border-bottom: 1px solid var(--color-border); }
+    .guiding-questions-body {
+      padding: var(--spacing-md);
+    }
+    .guiding-questions-body ol {
+      padding-left: var(--spacing-lg);
+    }
+    .guiding-questions-body li {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-bottom: 6px;
+      font-style: italic;
+    }
+
+    /* Diagramm */
+    .chart-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: var(--spacing-md) 0;
+    }
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px var(--spacing-md);
+      justify-content: center;
+      margin-top: var(--spacing-sm);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--color-text-muted);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Live-Text-Panel Sektionen */
+    .live-section {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .live-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .live-section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+    .live-section textarea {
+      border: none;
+      border-radius: 0;
+      font-size: 13px;
+      line-height: 1.55;
+      padding: 10px;
+      background: #fff;
+      min-height: 70px;
+      resize: vertical;
+    }
+    .live-section textarea:focus {
+      box-shadow: none;
+      border-color: transparent;
+    }
+
+    /* Verlaufseintrag (Prior sessions) */
+    .session-entry {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: var(--spacing-md);
+      background: var(--color-bg);
+      position: relative;
+    }
+    .session-entry + .session-entry { margin-top: var(--spacing-sm); }
+    .session-entry-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-sm);
+    }
+    .session-entry-num {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .session-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-sm);
+    }
+
+    /* Status-Pill */
+    .status-pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .pill-unauffaellig     { background: var(--color-accent-light); color: var(--color-accent); }
+    .pill-beeintraechtigt  { background: var(--color-amber-light); color: #a06010; }
+    .pill-nichtbeurteilbar { background: var(--color-nb-light); color: var(--color-nb); }
+    .pill-offen            { background: var(--color-open); color: #94a3b8; }
+    .pill-leicht           { background: #edf7f8; color: #3a9da8; }
+    .pill-mittelgradig     { background: var(--color-amber-light); color: #a06010; }
+    .pill-schwer           { background: #fdf0ef; color: #c0392b; }
+
+    /* ============================================================
+       4. ÜBERSICHT / ABSCHLUSS
+       ============================================================ */
+    .overview-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .overview-table th {
+      text-align: left;
+      padding: 8px 10px;
+      background: var(--color-bg);
+      border-bottom: 2px solid var(--color-border);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+    .overview-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: top;
+    }
+    .overview-table tr.area-row td {
+      background: var(--color-bg);
+      font-weight: 600;
+      color: var(--color-primary);
+      font-size: 13px;
+    }
+    .overview-table tr.summary-row td {
+      background: #f8fafc;
+      font-style: italic;
+      color: var(--color-text-muted);
+    }
+
+    /* Abschluss */
+    .verdict-option {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      padding: 10px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      margin-bottom: 6px;
+      transition: background 0.12s;
+    }
+    .verdict-option:hover { background: var(--color-bg); }
+    .verdict-option.selected { border-color: var(--color-accent); background: var(--color-accent-light); }
+    .verdict-option input[type="radio"] { margin-top: 2px; accent-color: var(--color-accent); }
+    .verdict-option-label { font-size: 14px; font-weight: 500; }
+    .verdict-option-desc { font-size: 12px; color: var(--color-text-muted); margin-top: 2px; }
+
+    .declaration-box {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg);
+      margin-top: var(--spacing-md);
+    }
+    .declaration-box input[type="checkbox"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      width: auto;
+      accent-color: var(--color-accent);
+    }
+    .declaration-box label {
+      font-size: 13px;
+      color: var(--color-text);
+      cursor: pointer;
+    }
+
+    .action-bar {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-lg);
+      flex-wrap: wrap;
+    }
+
+    /* Druckansicht (versteckt im normalen Modus) */
+    #print-view { display: none; }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-box {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: var(--spacing-xl);
+      max-width: 480px;
+      width: 90%;
+      box-shadow: var(--shadow-md);
+    }
+    .modal-box h3 { margin-bottom: var(--spacing-md); }
+    .modal-box textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      margin-bottom: var(--spacing-md);
+    }
+    .modal-actions { display: flex; gap: var(--spacing-sm); justify-content: flex-end; }
+
+    /* Startansicht */
+    .start-hero {
+      border: 2px solid var(--color-accent);
+      border-radius: var(--radius);
+      padding: var(--spacing-lg);
+      background: var(--color-accent-light);
+      margin-bottom: var(--spacing-lg);
+    }
+    .start-hero h2 { color: var(--color-accent); margin-bottom: 6px; }
+
+    /* ============================================================
+       5. @MEDIA PRINT
+       ============================================================ */
+    @page { size: A4; margin: 18mm 18mm 20mm 18mm; }
+
+    @media print {
+      html { zoom: 1 !important; }
+      body { background: white; }
+
+      #app-header,
+      #app-layout,
+      #main-panel,
+      #live-panel,
+      .modal-overlay { display: none !important; height: 0 !important; }
+
+      #print-view {
+        display: block !important;
+        font-family: var(--font-sans);
+        font-size: 9.5pt;
+        color: #000;
+      }
+      #print-view h1 { font-size: 14pt; margin-bottom: 4pt; color: #000; }
+      #print-view h2 { font-size: 11pt; margin-top: 10pt; margin-bottom: 4pt; color: #000; border-bottom: 0.75pt solid #aaa; padding-bottom: 2pt; page-break-after: avoid; }
+      #print-view h3 { font-size: 10pt; margin-top: 8pt; margin-bottom: 3pt; color: #000; page-break-after: avoid; }
+      #print-view table { width: 100%; border-collapse: collapse; margin-bottom: 6pt; }
+      #print-view th, #print-view td { border: 0.5pt solid #aaa; padding: 3pt 6pt; text-align: left; font-size: 8.5pt; }
+      #print-view th { background: #f0f0f0; font-weight: bold; }
+      #print-view .print-meta { margin-bottom: 10pt; font-size: 9pt; }
+      #print-view .print-meta table { border: none; }
+      #print-view .print-meta td { border: none; padding: 1.5pt 4pt; }
+      #print-view .print-meta td:first-child { font-weight: bold; color: #444; width: 130pt; }
+      #print-view .print-section { margin-bottom: 10pt; }
+      #print-view .print-text { background: #f9f9f9; border: 0.5pt solid #ccc; padding: 6pt 8pt; font-size: 9pt; white-space: pre-wrap; line-height: 1.5; }
+      #print-view .sig-block { margin-top: 16pt; }
+      #print-view .sig-line { border-bottom: 1pt solid #000; width: 200pt; display: inline-block; margin-bottom: 3pt; }
+      #print-view .patient-info-box { border: 1pt solid #aaa; padding: 6pt 8pt; font-size: 9pt; color: #333; margin-top: 10pt; line-height: 1.5; }
+      #print-view .samw-box { border: 0.5pt solid #aaa; padding: 6pt 8pt; font-size: 9pt; background: #fafafa; margin-bottom: 8pt; }
+      #print-view .samw-step { margin-bottom: 3pt; }
+
+      /* E4: Bereichstitel in Kapitälchen */
+      #print-view .print-area-h2 { font-variant: small-caps; letter-spacing: 0.04em; }
+      #print-view td em { font-style: italic; color: #444; }
+
+      /* E2: Gesamturteil-Box */
+      #print-view .print-verdict-box { padding: 6pt 10pt; margin-bottom: 8pt; border-radius: 2pt; page-break-inside: avoid; }
+      #print-view .print-verdict-label { font-size: 8pt; font-weight: bold; color: #444; display: block; margin-bottom: 2pt; }
+      #print-view .print-verdict-value { font-size: 13pt; font-weight: 700; color: #111; }
+
+      /* E3: Donut-Diagramme nebeneinander */
+      #print-view .print-donut-row { display: flex; gap: 0; margin-bottom: 8pt; page-break-inside: avoid; }
+      #print-view .print-donut-cell { flex: 1; text-align: center; padding: 4pt; }
+      #print-view .print-area-title { font-size: 8pt; font-weight: bold; font-variant: small-caps; letter-spacing: 0.05em; margin-bottom: 4pt; color: #0D2B55; }
+      #print-view .print-area-summary-label { font-size: 8pt; color: #444; margin-top: 3pt; font-style: italic; }
+      #print-view .chart-container { display: flex; flex-direction: column; align-items: center; gap: 4pt; }
+      #print-view .chart-legend { font-size: 7pt; }
+      #print-view .legend-item { display: flex; align-items: center; gap: 3pt; margin-bottom: 2pt; }
+      #print-view .legend-dot { width: 7pt; height: 7pt; border-radius: 50%; flex-shrink: 0; }
+
+      /* D4: Befund-Abschnitt neue Seite + Patientenstreifen */
+      #print-view .print-befund-section { page-break-before: always; }
+      #print-view .print-patient-strip { font-size: 8pt; color: #555; padding-bottom: 4pt; border-bottom: 0.5pt solid #bbb; margin-bottom: 6pt; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Statische Hülle -->
+  <header id="app-header">
+    <div class="logo">U-Doc Digital <span>·</span> <span>Urteilsfähigkeit</span></div>
+    <div id="header-meta"></div>
+    <div id="fontsize-controls">
+      <span class="fs-label">Schriftgrösse</span>
+      <button class="fs-btn fs-btn-minus" id="fs-decrease" onclick="changeFontSize(-1)"
+        title="Schrift verkleinern" aria-label="Schrift verkleinern">A&minus;</button>
+      <button class="fs-btn fs-btn-reset" id="fs-reset" onclick="resetFontSize()"
+        title="Standardgrösse" aria-label="Schriftgrösse zurücksetzen">A</button>
+      <button class="fs-btn fs-btn-plus" id="fs-increase" onclick="changeFontSize(1)"
+        title="Schrift vergrössern" aria-label="Schrift vergrössern">A+</button>
+    </div>
+  </header>
+
+  <div id="app-layout">
+    <!-- Hauptinhalt (linke Spalte) -->
+    <main id="main-panel"></main>
+
+    <!-- Live-Text-Panel (rechte Spalte) -->
+    <aside id="live-panel">
+      <div id="live-panel-header">
+        <h3>Befundtext</h3>
+        <button class="btn btn-ghost btn-sm" onclick="copyBefundToClipboard()" title="Befund kopieren">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="9" height="11" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M11 5V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Kopieren
+        </button>
+      </div>
+      <div id="live-panel-body"></div>
+      <div id="live-panel-footer">
+        <button class="btn btn-secondary btn-full btn-sm" onclick="openPrintView()">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6V2h8v4" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="1" y="6" width="14" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="4" y="10" width="8" height="4" fill="white" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Druckansicht
+        </button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Druckansicht-Container -->
+  <div id="print-view"></div>
+
+  <script>
+    /* ============================================================
+       A. DATENSMODELL — udocCore
+       ============================================================ */
+    const udocCore = {
+      id: 'udoc-core',
+      version: '1.0',
+      areas: [
+        {
+          id: 'erkenntnis',
+          label: 'Erkenntnisfähigkeit',
+          focus: 'Schwerpunkt: Kognition',
+          definition: 'Fähigkeit, die vorliegende Entscheidungssituation zu erfassen.',
+          areaNote: 'Bei schwerwiegender Störung der Erkenntnisfähigkeit erübrigt sich die weitere Prüfung (SAMW).',
+          criteria: [
+            {
+              id: 'erkenntnis-info',
+              label: 'Informationsverständnis',
+              definition: 'Die Person kann die vermittelten Informationen zu ihrem Zustand, den Entscheidungsalternativen sowie deren jeweiligen Vor- und Nachteilen in eigenen Worten wiedergeben.',
+              guidingQuestions: [
+                'Würden Sie das Gespräch aus Ihrer Perspektive zusammenfassen — zu Ihrem Zustand, den Möglichkeiten und deren Vor- und Nachteilen?',
+                'Was würde geschehen, wenn Sie sich gegen die Massnahme oder für ein Abwarten entscheiden?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'erkenntnis-folgen',
+              label: 'Verständnis der lebenspraktischen Folgen',
+              definition: 'Die Person kann konkret benennen, welche Auswirkungen die Entscheidung auf ihre Lebensführung und Lebensqualität haben könnte.',
+              guidingQuestions: [
+                'Welche konkreten Auswirkungen hätte diese Entscheidung auf Ihren Alltag?',
+                'Was verändert sich für Sie praktisch — kurz- und längerfristig?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'erkenntnis-krankheit',
+              label: 'Krankheitsverständnis',
+              definition: 'Die Person erkennt die fachliche Einschätzung ihrer Situation oder kann eine abweichende Sichtweise plausibel darlegen.',
+              guidingQuestions: [
+                'Wie verstehen Sie die fachliche Einschätzung Ihrer Situation?',
+                'Falls Sie diese anders sehen — können Sie Ihre Sichtweise beschreiben?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'erkenntnis-behandlung',
+              label: 'Verständnis des Behandlungsbedarfs',
+              definition: 'Die Person erkennt, dass das empfohlene Vorgehen potenziell zu ihren Gunsten ist, oder kann ihre abweichende Einschätzung plausibel darlegen.',
+              guidingQuestions: [
+                'Wie verstehen Sie das empfohlene Vorgehen?',
+                'Worin sehen Sie den möglichen Nutzen — und falls Sie das anders einschätzen, woran liegt das?'
+              ],
+              criterionNote: null
+            }
+          ],
+          summaryScale: [
+            { id: 'unauffaellig',     label: 'unauffällig' },
+            { id: 'leicht',           label: 'leicht beeinträchtigt' },
+            { id: 'mittelgradig',     label: 'mittelgradig beeinträchtigt' },
+            { id: 'schwer',           label: 'schwer beeinträchtigt' },
+            { id: 'nichtbeurteilbar', label: 'nicht beurteilbar' }
+          ]
+        },
+        {
+          id: 'wertung',
+          label: 'Wertungsfähigkeit',
+          focus: 'Schwerpunkt: Motivation und Emotion',
+          definition: 'Fähigkeit, der Entscheidungssituation anhand eigener Wertmassstäbe persönliche Bedeutung beizumessen.',
+          areaNote: null,
+          criteria: [
+            {
+              id: 'wertung-werte',
+              label: 'Bezug zu eigenen Werthaltungen',
+              definition: 'Die Person kann die Entscheidung nachvollziehbar mit ihren persönlichen Werthaltungen in Verbindung bringen.',
+              guidingQuestions: [
+                'Warum ist diese Entscheidung für Sie persönlich wichtig?',
+                'Wie passt diese Entscheidung zu dem, was Ihnen in Ihrem Leben wichtig ist?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'wertung-lebensgeschichte',
+              label: 'Lebensgeschichtliche Einordnung',
+              definition: 'Die Person kann die Entscheidung im Zusammenhang mit ihrer bisherigen Erfahrung und ihrer gegenwärtigen Lebenssituation betrachten.',
+              guidingQuestions: [
+                'Wie ordnet sich diese Entscheidung in Ihren bisherigen Lebensweg ein?',
+                'Wie stellen Sie sich vor, in einigen Jahren auf diese Entscheidung zurückzublicken?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'wertung-gewichtung',
+              label: 'Informationsgewichtung / Entscheidungsgründe',
+              definition: 'Die Person kann einzelne Aspekte ihrer Entscheidung nachvollziehbar gewichten und verständliche Gründe anführen, bzw. ist sich im Klaren darüber, falls sie dies nicht tut.',
+              guidingQuestions: [
+                'Was spricht für diese Entscheidung, was dagegen — und wie gewichten Sie das?',
+                'Welche Überlegungen haben für Sie besonderes Gewicht?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'wertung-affekt',
+              label: 'Affektive Beteiligung',
+              definition: 'Die Person beteiligt sich mit angemessener Affektintensität am Entscheidungsprozess und zeigt eine nachvollziehbare emotionale Reaktion.',
+              guidingQuestions: [
+                'Wie fühlt sich die Entscheidung für Sie an?',
+                'Welche Gefühle löst die Vorstellung der verschiedenen Möglichkeiten in Ihnen aus?'
+              ],
+              criterionNote: null
+            }
+          ],
+          summaryScale: [
+            { id: 'unauffaellig',     label: 'unauffällig' },
+            { id: 'leicht',           label: 'leicht beeinträchtigt' },
+            { id: 'mittelgradig',     label: 'mittelgradig beeinträchtigt' },
+            { id: 'schwer',           label: 'schwer beeinträchtigt' },
+            { id: 'nichtbeurteilbar', label: 'nicht beurteilbar' }
+          ]
+        },
+        {
+          id: 'willens',
+          label: 'Willensbildung und -umsetzung',
+          focus: 'Schwerpunkt: Entscheidung und Handlung',
+          definition: 'Fähigkeit, eine Entscheidung zu treffen, verständlich zu kommunizieren, zu begründen und aufrechtzuerhalten.',
+          areaNote: null,
+          criteria: [
+            {
+              id: 'willens-entscheidung',
+              label: 'Treffen und Äussern einer Entscheidung',
+              definition: 'Die Person ist in der Lage, eine Entscheidung bewusst zu treffen und verständlich zu kommunizieren.',
+              guidingQuestions: [
+                'Wie würden Sie Ihre Entscheidung in Worte fassen?',
+                'Hat sich Ihre Einschätzung in den letzten Wochen oder Monaten verändert?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'willens-begruendung',
+              label: 'Bereitstellen einer Begründung',
+              definition: 'Die Person kann kohärent darlegen — durch rationale Argumentation oder reflektierte Selbstwahrnehmung —, weshalb sie sich für eine bestimmte Option entschieden hat.',
+              guidingQuestions: [
+                'Können Sie beschreiben, weshalb Sie sich für diesen Weg entschieden haben?',
+                'Was hat Sie letztendlich zu dieser Entscheidung geführt?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'willens-innen',
+              label: 'Widerstandskraft gegen inneren Drang',
+              definition: 'Die Person kann mit inneren Spannungen, Ängsten oder Unsicherheiten so umgehen, dass sie ihre Entscheidung reflektiert weiterverfolgen kann.',
+              guidingQuestions: [
+                'Gibt es innere Spannungen oder Ängste, die Ihnen die Umsetzung erschweren — und wie gehen Sie damit um?',
+                'Wie halten Sie Ihre Entscheidung aufrecht, wenn innere Zweifel auftauchen?'
+              ],
+              criterionNote: null
+            },
+            {
+              id: 'willens-aussen',
+              label: 'Widerstandskraft gegen äussere Einflüsse',
+              definition: 'Die Person kann ihren Willen auch bei abweichenden Meinungen oder Erwartungen anderer reflektiert aufrechterhalten und umsetzen.',
+              guidingQuestions: [
+                'Erleben Sie Erwartungen oder Druck aus Ihrem Umfeld?',
+                'Wie setzen Sie sich mit abweichenden Meinungen anderer auseinander?'
+              ],
+              criterionNote: null
+            }
+          ],
+          summaryScale: [
+            { id: 'unauffaellig',     label: 'unauffällig' },
+            { id: 'leicht',           label: 'leicht beeinträchtigt' },
+            { id: 'mittelgradig',     label: 'mittelgradig beeinträchtigt' },
+            { id: 'schwer',           label: 'schwer beeinträchtigt' },
+            { id: 'nichtbeurteilbar', label: 'nicht beurteilbar' }
+          ]
+        }
+      ]
+    };
+
+    /* Optionen pro Kriterium (3-stufig) */
+    const CRITERION_OPTIONS = [
+      { id: 'unauffaellig',     label: 'unauffällig' },
+      { id: 'beeintraechtigt',  label: 'beeinträchtigt' },
+      { id: 'nichtbeurteilbar', label: 'nicht beurteilbar' }
+    ];
+
+    /* ============================================================
+       B. EXTENSION MODULES (Meilenstein 2)
+       ============================================================ */
+    const extensionModules = {};
+
+    /* ============================================================
+       C. TEXT-BLÖCKE
+       ============================================================ */
+    const textBlocks = {
+      // Erkenntnisfähigkeit — Einzelkriterien
+      'erkenntnis-info': {
+        'unauffaellig':     'Die Person kann die für die Entscheidung relevanten Informationen zu ihrem Zustand, den Entscheidungsalternativen sowie deren Vor- und Nachteilen in eigenen Worten zutreffend wiedergeben.',
+        'beeintraechtigt':  'Die Wiedergabe der relevanten Informationen gelingt nur teilweise; wesentliche Aspekte werden unvollständig oder unzutreffend dargestellt.',
+        'nichtbeurteilbar': 'Das Informationsverständnis konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'erkenntnis-folgen': {
+        'unauffaellig':     'Die Person kann konkret benennen, welche Auswirkungen die Entscheidung auf ihre Lebensführung und Lebensqualität haben könnte.',
+        'beeintraechtigt':  'Die lebenspraktischen Folgen der Entscheidung werden nur teilweise oder unscharf erfasst.',
+        'nichtbeurteilbar': 'Das Verständnis der lebenspraktischen Folgen konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'erkenntnis-krankheit': {
+        'unauffaellig':     'Die Person erkennt die fachliche Einschätzung ihrer Situation oder kann eine abweichende Sichtweise plausibel darlegen.',
+        'beeintraechtigt':  'Das Verständnis der fachlichen Einschätzung ist eingeschränkt; eine abweichende Sichtweise wird nicht plausibel dargelegt.',
+        'nichtbeurteilbar': 'Das Krankheitsverständnis konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'erkenntnis-behandlung': {
+        'unauffaellig':     'Die Person erkennt, dass das empfohlene Vorgehen potenziell zu ihren Gunsten ist, oder kann ihre abweichende Einschätzung plausibel darlegen.',
+        'beeintraechtigt':  'Der mögliche Nutzen des empfohlenen Vorgehens wird nur teilweise erfasst; eine abweichende Einschätzung wird nicht plausibel dargelegt.',
+        'nichtbeurteilbar': 'Das Verständnis des Behandlungsbedarfs konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      // Wertungsfähigkeit — Einzelkriterien
+      'wertung-werte': {
+        'unauffaellig':     'Die Person kann die Entscheidung nachvollziehbar mit ihren persönlichen Werthaltungen in Verbindung bringen.',
+        'beeintraechtigt':  'Der Bezug der Entscheidung zu eigenen Werthaltungen gelingt nur teilweise oder bleibt unscharf.',
+        'nichtbeurteilbar': 'Der Bezug zu eigenen Werthaltungen konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'wertung-lebensgeschichte': {
+        'unauffaellig':     'Die Person kann die Entscheidung im Zusammenhang mit ihrer bisherigen Erfahrung und ihrer gegenwärtigen Lebenssituation betrachten.',
+        'beeintraechtigt':  'Die lebensgeschichtliche Einordnung der Entscheidung gelingt nur teilweise.',
+        'nichtbeurteilbar': 'Die lebensgeschichtliche Einordnung konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'wertung-gewichtung': {
+        'unauffaellig':     'Die Person kann einzelne Aspekte ihrer Entscheidung nachvollziehbar gewichten und verständliche Gründe anführen, bzw. ist sich im Klaren darüber, falls sie dies nicht tut.',
+        'beeintraechtigt':  'Die Gewichtung der Entscheidungsaspekte ist nur teilweise nachvollziehbar; verständliche Gründe werden nur ansatzweise angeführt.',
+        'nichtbeurteilbar': 'Die Informationsgewichtung konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'wertung-affekt': {
+        'unauffaellig':     'Die Person beteiligt sich mit angemessener Affektintensität am Entscheidungsprozess und zeigt eine nachvollziehbare emotionale Reaktion.',
+        'beeintraechtigt':  'Die affektive Beteiligung am Entscheidungsprozess ist auffällig — über- oder untermässig ausgeprägt oder nicht nachvollziehbar.',
+        'nichtbeurteilbar': 'Die affektive Beteiligung konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      // Willensbildung und -umsetzung — Einzelkriterien
+      'willens-entscheidung': {
+        'unauffaellig':     'Die Person ist in der Lage, eine Entscheidung bewusst zu treffen und verständlich zu kommunizieren.',
+        'beeintraechtigt':  'Das Treffen oder Äussern einer Entscheidung gelingt nur teilweise oder uneindeutig.',
+        'nichtbeurteilbar': 'Das Treffen und Äussern einer Entscheidung konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'willens-begruendung': {
+        'unauffaellig':     'Die Person kann kohärent darlegen — durch rationale Argumentation oder reflektierte Selbstwahrnehmung —, weshalb sie sich für eine bestimmte Option entschieden hat.',
+        'beeintraechtigt':  'Die Begründung der Entscheidung ist nur teilweise kohärent oder bleibt bruchstückhaft.',
+        'nichtbeurteilbar': 'Das Bereitstellen einer Begründung konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'willens-innen': {
+        'unauffaellig':     'Die Person kann mit inneren Spannungen, Ängsten oder Unsicherheiten so umgehen, dass sie ihre Entscheidung reflektiert weiterverfolgen kann.',
+        'beeintraechtigt':  'Innere Spannungen, Impulse oder Ängste beeinträchtigen die Umsetzung der getroffenen Entscheidung teilweise.',
+        'nichtbeurteilbar': 'Der Umgang mit inneren Spannungen konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'willens-aussen': {
+        'unauffaellig':     'Die Person kann ihren Willen auch bei abweichenden Meinungen oder Erwartungen anderer reflektiert aufrechterhalten und umsetzen.',
+        'beeintraechtigt':  'Die Aufrechterhaltung des eigenen Willens gegenüber äusseren Einflüssen gelingt nur teilweise.',
+        'nichtbeurteilbar': 'Die Auseinandersetzung mit äusseren Einflüssen konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      // Bereichszusammenfassungen (fünfstufig)
+      '_area:erkenntnis': {
+        'unauffaellig':     'Die Erkenntnisfähigkeit ist hinsichtlich der vorliegenden Entscheidung insgesamt unauffällig.',
+        'leicht':           'Die Erkenntnisfähigkeit ist hinsichtlich der vorliegenden Entscheidung leicht beeinträchtigt.',
+        'mittelgradig':     'Die Erkenntnisfähigkeit ist hinsichtlich der vorliegenden Entscheidung mittelgradig beeinträchtigt.',
+        'schwer':           'Die Erkenntnisfähigkeit ist hinsichtlich der vorliegenden Entscheidung schwer beeinträchtigt.',
+        'nichtbeurteilbar': 'Die Erkenntnisfähigkeit konnte hinsichtlich der vorliegenden Entscheidung nicht beurteilt werden.'
+      },
+      '_area:wertung': {
+        'unauffaellig':     'Die Wertungsfähigkeit ist hinsichtlich der vorliegenden Entscheidung insgesamt unauffällig.',
+        'leicht':           'Die Wertungsfähigkeit ist hinsichtlich der vorliegenden Entscheidung leicht beeinträchtigt.',
+        'mittelgradig':     'Die Wertungsfähigkeit ist hinsichtlich der vorliegenden Entscheidung mittelgradig beeinträchtigt.',
+        'schwer':           'Die Wertungsfähigkeit ist hinsichtlich der vorliegenden Entscheidung schwer beeinträchtigt.',
+        'nichtbeurteilbar': 'Die Wertungsfähigkeit konnte hinsichtlich der vorliegenden Entscheidung nicht beurteilt werden.'
+      },
+      '_area:willens': {
+        'unauffaellig':     'Die Willensbildung und -umsetzung ist hinsichtlich der vorliegenden Entscheidung insgesamt unauffällig.',
+        'leicht':           'Die Willensbildung und -umsetzung ist hinsichtlich der vorliegenden Entscheidung leicht beeinträchtigt.',
+        'mittelgradig':     'Die Willensbildung und -umsetzung ist hinsichtlich der vorliegenden Entscheidung mittelgradig beeinträchtigt.',
+        'schwer':           'Die Willensbildung und -umsetzung ist hinsichtlich der vorliegenden Entscheidung schwer beeinträchtigt.',
+        'nichtbeurteilbar': 'Die Willensbildung und -umsetzung konnte hinsichtlich der vorliegenden Entscheidung nicht beurteilt werden.'
+      }
+    };
+
+    /* Urteilspresets */
+    const VERDICT_PRESETS = {
+      'urteilsfaehig':    'Die untersuchte Person ist hinsichtlich der vorliegenden Entscheidung als urteilsfähig einzuschätzen.',
+      'urteilsunfaehig':  'Die untersuchte Person ist hinsichtlich der vorliegenden Entscheidung als urteilsunfähig einzuschätzen.',
+      'reevaluation':     'Zum jetzigen Zeitpunkt ist keine abschliessende Beurteilung der Urteilsfähigkeit möglich. Eine erneute Beurteilung wird empfohlen.',
+      'nichtbeurteilbar': 'Die Urteilsfähigkeit konnte im Rahmen dieser Untersuchung nicht beurteilt werden.'
+    };
+
+    // OFFEN: Ob und wie Art. 16 ZGB im Tool explizit benannt wird, ist mit dem Betreuer abzuklären.
+    const LEGAL_GROUNDS = [
+      { id: 'kindesalter',          label: 'Kindesalter' },
+      { id: 'geistige-behinderung', label: 'Geistige Behinderung' },
+      { id: 'psychische-stoerung',  label: 'Psychische Störung' },
+      { id: 'rausch',               label: 'Rausch' },
+      { id: 'aehnliche-zustaende',  label: 'Ähnliche Zustände' },
+      { id: 'andere',               label: 'Andere (bitte spezifizieren)' }
+    ];
+
+    /* ============================================================
+       D. ANWENDUNGSZUSTAND
+       ============================================================ */
+    let state = {};
+
+    /* Flacher Ablaufplan (wird von buildFlatSchedule befüllt) */
+    let schedule = [];
+
+    /* ============================================================
+       E. LOGIK
+       ============================================================ */
+
+    /* Zustand initialisieren */
+    function initState() {
+      const today = new Date().toISOString().slice(0, 10);
+      state = {
+        // Metadaten — Beurteilung
+        meta: {
+          examiners:          '',   // Beurteilende Person(en), Mehrzeile möglich
+          assessmentDate:     today,
+          assessmentLocation: '',
+          // Patientenetikett
+          patientFirstName:   '',
+          patientLastName:    '',
+          patientDOB:         '',
+          patientAddress:     '',
+          // Separate Identifikation
+          patientRef:         '',   // Kürzel / Fallnummer
+          // Ausgangslage
+          referenceDecision:  '',   // Bezugsentscheidung / Ausgangslage
+          // Verlauf
+          isFirstAssessment:  true,
+          priorSessions:      []
+        },
+        // Navigationsstand
+        nav: {
+          view:      'start',  // 'start' | 'criterion' | 'assessment' | 'summary'
+          flatIndex: 0
+        },
+        // Kriteriumsantworten: criterionId -> optionId | null
+        criterionAnswers: {},
+        // Bereichszusammenfassungen: areaId -> { summaryId, description }
+        areaSummaries: {},
+        // SAMW-Beurteilungsalgorithmus
+        samwAlgorithm: {
+          step1: null,            // null | 'ja' | 'nein'
+          step2: null,
+          step3: null,
+          suggestedVerdict: null
+        },
+        // Abschluss
+        conclusion: {
+          verdict:       '',
+          reasoning:     '',
+          legalGround:   '',
+          legalDetail:   '',
+          declaration:   false
+        },
+        // Live-Text (einziges Textfeld)
+        liveText: {
+          text:     '',
+          autoText: '',
+          edited:   false
+        }
+      };
+
+      // Antworten vorinitialisieren
+      udocCore.areas.forEach(area => {
+        area.criteria.forEach(c => {
+          state.criterionAnswers[c.id] = null;
+        });
+        state.areaSummaries[area.id] = { summaryId: null, description: '' };
+      });
+
+      // Ablaufplan erstellen
+      schedule = buildFlatSchedule();
+    }
+
+    /* Flachen Ablaufplan erstellen */
+    function buildFlatSchedule() {
+      const items = [];
+      udocCore.areas.forEach(area => {
+        area.criteria.forEach(criterion => {
+          items.push({
+            type:           'criterion',
+            areaId:         area.id,
+            criterionId:    criterion.id,
+            areaLabel:      area.label,
+            criterionLabel: criterion.label
+          });
+        });
+        items.push({
+          type:      'areaSummary',
+          areaId:    area.id,
+          areaLabel: area.label
+        });
+      });
+      return items;
+    }
+
+    /* Aktuelles Planungselement ermitteln */
+    function getEffectiveCriterion() {
+      return schedule[state.nav.flatIndex] || null;
+    }
+
+    /* Kriteriumsoption auswählen */
+    function selectCriterionOption(criterionId, optionId) {
+      state.criterionAnswers[criterionId] = optionId;
+      updateFullLiveText({ silent: false });
+      renderMainContent();
+    }
+
+    /* Bereichszusammenfassung setzen */
+    function setAreaSummary(areaId, summaryId) {
+      state.areaSummaries[areaId].summaryId = summaryId;
+      updateFullLiveText({ silent: false });
+      renderMainContent();
+    }
+
+    /* Bereichsbeschreibung setzen */
+    function setAreaDescription(areaId, text) {
+      state.areaSummaries[areaId].description = text;
+      updateFullLiveText({ silent: true });
+    }
+
+    /* Bisherige Sitzung hinzufügen */
+    function addPriorSession() {
+      state.meta.priorSessions.push({
+        id:       Date.now(),
+        date:     '',
+        examiner: '',
+        result:   ''
+      });
+      renderMainContent();
+    }
+
+    /* Bisherige Sitzung aktualisieren */
+    function updatePriorSession(id, field, value) {
+      const session = state.meta.priorSessions.find(s => s.id === id);
+      if (session) session[field] = value;
+    }
+
+    /* Bisherige Sitzung entfernen */
+    function removePriorSession(id) {
+      state.meta.priorSessions = state.meta.priorSessions.filter(s => s.id !== id);
+      renderMainContent();
+    }
+
+    /* Abschluss setzen */
+    function setConclusion(field, value) {
+      state.conclusion[field] = value;
+      updateFullLiveText({ silent: true });
+      renderLiveTextPanel();
+    }
+
+    /* Beurteilung */
+    function setSamwStep(step, value) {
+      state.samwAlgorithm['step' + step] = value;
+      // Nachfolgende Schritte zurücksetzen
+      if (step === 1) { state.samwAlgorithm.step2 = null; state.samwAlgorithm.step3 = null; }
+      if (step === 2) { state.samwAlgorithm.step3 = null; }
+      // Vorurteil berechnen
+      const s = state.samwAlgorithm;
+      let suggested = null;
+      if      (s.step1 === 'nein')  suggested = 'urteilsfaehig';   // Beeinträchtigungen für Entscheidung nicht relevant
+      else if (s.step1 === 'keine') suggested = 'urteilsfaehig';   // Keine Beeinträchtigungen festgestellt
+      else if (s.step1 === 'ja' && s.step2 === 'nein') suggested = 'urteilsfaehig';
+      else if (s.step1 === 'ja' && s.step2 === 'ja' && s.step3 === 'ja')  suggested = 'urteilsfaehig';
+      else if (s.step1 === 'ja' && s.step2 === 'ja' && s.step3 === 'nein') suggested = 'urteilsunfaehig';
+      state.samwAlgorithm.suggestedVerdict = suggested;
+      // Gesamturteil vorbelegen, sofern noch nicht manuell gesetzt
+      if (suggested && !state.conclusion.verdict) state.conclusion.verdict = suggested;
+      renderMainContent();
+    }
+
+    /* Weiter-Navigation */
+    function goNext() {
+      if (state.nav.view === 'start') {
+        if (!validateStartForm()) return;
+        state.nav.view = 'criterion';
+        state.nav.flatIndex = 0;
+      } else if (state.nav.view === 'criterion') {
+        if (state.nav.flatIndex < schedule.length - 1) {
+          state.nav.flatIndex++;
+        } else {
+          state.nav.view = 'assessment';
+        }
+      } else if (state.nav.view === 'assessment') {
+        state.nav.view = 'summary';
+      }
+      renderMainContent();
+      updateHeaderMeta();
+    }
+
+    /* Zurück-Navigation */
+    function goBack() {
+      if (state.nav.view === 'criterion') {
+        if (state.nav.flatIndex > 0) {
+          state.nav.flatIndex--;
+        } else {
+          state.nav.view = 'start';
+        }
+      } else if (state.nav.view === 'assessment') {
+        state.nav.view = 'criterion';
+        state.nav.flatIndex = schedule.length - 1;
+      } else if (state.nav.view === 'summary') {
+        state.nav.view = 'assessment';
+      }
+      renderMainContent();
+      updateHeaderMeta();
+    }
+
+    /* Direkt zu einer Ansicht navigieren */
+    function goToView(view, index) {
+      state.nav.view = view;
+      if (index !== undefined) state.nav.flatIndex = index;
+      renderMainContent();
+    }
+
+    /* Startformular validieren — liest alle Felder in state.meta */
+    function validateStartForm() {
+      // Alle Felder einlesen
+      const read = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+      state.meta.examiners          = read('start-examiners');
+      state.meta.assessmentDate     = read('start-assessmentDate');
+      state.meta.assessmentLocation = read('start-assessmentLocation');
+      state.meta.patientFirstName   = read('start-patientFirstName');
+      state.meta.patientLastName    = read('start-patientLastName');
+      state.meta.patientDOB         = read('start-patientDOB');
+      state.meta.patientAddress     = read('start-patientAddress');
+      state.meta.patientRef         = read('start-patientRef');
+      state.meta.referenceDecision  = read('start-referenceDecision');
+
+      let valid = true;
+
+      // Pflichtfeld: Beurteilende Person(en)
+      const exEl  = document.getElementById('start-examiners');
+      const exErr = document.getElementById('err-examiners');
+      if (!state.meta.examiners.trim()) {
+        if (exEl)  exEl.classList.add('error');
+        if (exErr) exErr.textContent = 'Dieses Feld ist erforderlich.';
+        valid = false;
+      } else {
+        if (exEl)  exEl.classList.remove('error');
+        if (exErr) exErr.textContent = '';
+      }
+
+      // Pflichtfeld: Patientenidentifikation (Name oder Kürzel)
+      const hasPatient = state.meta.patientLastName.trim() || state.meta.patientRef.trim();
+      const refEl  = document.getElementById('start-patientRef');
+      const refErr = document.getElementById('err-patientRef');
+      const lnEl   = document.getElementById('start-patientLastName');
+      if (!hasPatient) {
+        if (refEl)  refEl.classList.add('error');
+        if (refErr) refErr.textContent = 'Nachname oder Kürzel / Fallnummer ist erforderlich.';
+        if (lnEl)   lnEl.classList.add('error');
+        valid = false;
+      } else {
+        if (refEl)  refEl.classList.remove('error');
+        if (refErr) refErr.textContent = '';
+        if (lnEl)   lnEl.classList.remove('error');
+      }
+
+      // Pflichtfeld: Ausgangslage
+      const rdEl  = document.getElementById('start-referenceDecision');
+      const rdErr = document.getElementById('err-referenceDecision');
+      if (!state.meta.referenceDecision.trim()) {
+        if (rdEl)  rdEl.classList.add('error');
+        if (rdErr) rdErr.textContent = 'Dieses Feld ist erforderlich.';
+        valid = false;
+      } else {
+        if (rdEl)  rdEl.classList.remove('error');
+        if (rdErr) rdErr.textContent = '';
+      }
+
+      return valid;
+    }
+
+    /* ============================================================
+       F. LIVE-TEXT-LOGIK (einziges Textfeld)
+       ============================================================ */
+
+    /* Kanonische Endbefund-Quelle — gibt { header, body } zurück */
+    function buildEndbefund() {
+      const m = state.meta;
+      const patientName = [m.patientFirstName, m.patientLastName].filter(Boolean).join(' ');
+      const patientDisplay = patientName || m.patientRef || '—';
+
+      // Kopfblock (Plain-Text)
+      let header = 'EVALUATION DER URTEILSFÄHIGKEIT (U-Doc)\n';
+      header += '─'.repeat(48) + '\n';
+      header += 'Beurteilende Person(en): ' + (m.examiners || '—') + '\n';
+      header += 'Datum der Beurteilung:   ' + (m.assessmentDate || '—') + '\n';
+      header += 'Ort:                     ' + (m.assessmentLocation || '—') + '\n';
+      header += 'Patient/in:              ' + patientDisplay;
+      if (m.patientDOB) header += '  (geb. ' + m.patientDOB + ')';
+      header += '\n';
+      if (m.patientRef && patientName) header += 'Kürzel/Fallnummer:       ' + m.patientRef + '\n';
+      header += '\n';
+      if (m.referenceDecision.trim()) {
+        header += 'Ausgangslage:\n' + m.referenceDecision.trim() + '\n\n';
+      }
+      header += (m.isFirstAssessment ? 'Erstbeurteilung' : 'Folgebeurteilung') + '\n';
+      header += '─'.repeat(48);
+
+      // Körper — ein Absatz pro Bereich (Einzelkriteriumssätze zusammengefasst + Bereichszusammenfassung)
+      const bodyParts = [];
+      udocCore.areas.forEach(area => {
+        const sentences = [];
+        area.criteria.forEach(criterion => {
+          const optId = state.criterionAnswers[criterion.id];
+          if (optId && textBlocks[criterion.id] && textBlocks[criterion.id][optId]) {
+            sentences.push(textBlocks[criterion.id][optId]);
+          }
+        });
+        if (sentences.length === 0) return;
+        const summ = state.areaSummaries[area.id];
+        const summId = summ ? summ.summaryId : null;
+        const key = '_area:' + area.id;
+        let para = sentences.join(' ');
+        if (summId && textBlocks[key] && textBlocks[key][summId]) {
+          para += '\n' + textBlocks[key][summId];
+        }
+        const desc = summ ? (summ.description || '').trim() : '';
+        if (desc) para += '\n' + desc;
+        bodyParts.push(para);
+      });
+
+      // Konsolidierter Zusammenfassungsabsatz
+      const summParts = [];
+      udocCore.areas.forEach(area => {
+        const summ = state.areaSummaries[area.id];
+        const summId = summ ? summ.summaryId : null;
+        if (!summId) return;
+        if (summId === 'nichtbeurteilbar') {
+          summParts.push('die ' + area.label + ' konnte nicht beurteilt werden');
+        } else {
+          const entry = area.summaryScale.find(s => s.id === summId);
+          if (entry) summParts.push('die ' + area.label + ' ' + entry.label);
+        }
+      });
+      if (summParts.length > 0) {
+        const last = summParts[summParts.length - 1];
+        const rest = summParts.slice(0, -1);
+        const summSentence = summParts.length === 1
+          ? 'Zusammenfassend zeigt sich ' + last + '.'
+          : 'Zusammenfassend zeigt sich ' + rest.join(', ') + ' sowie ' + last + '.';
+        bodyParts.push(summSentence);
+      }
+
+      // Gesamturteil
+      const c = state.conclusion;
+      if (c.verdict) {
+        let final = VERDICT_PRESETS[c.verdict] || '';
+        if (c.reasoning.trim()) final += '\n\n' + c.reasoning.trim();
+        bodyParts.push(final);
+      }
+
+      return { header, body: bodyParts.join('\n\n') };
+    }
+
+    /* Gesamten Live-Text aus Metadaten und Antworten generieren */
+    function generateFullLiveText() {
+      const { header, body } = buildEndbefund();
+      return header + '\n\n' + (body || '');
+    }
+
+    /* Vollständigen Live-Text aktualisieren */
+    function updateFullLiveText(opts) {
+      opts = opts || {};
+      const newAutoText = generateFullLiveText();
+      state.liveText.autoText = newAutoText;
+
+      if (!state.liveText.edited || opts.silent === true) {
+        state.liveText.text = newAutoText;
+        state.liveText.edited = false;
+        const ta = document.getElementById('live-text-main');
+        if (ta && document.activeElement !== ta) ta.value = newAutoText;
+        updateLiveRegenBtnVisibility();
+      }
+    }
+
+    /* Rückwärtskompatibilität — wird von älteren Aufrufstellen benutzt */
+    function updateLiveTextSection(sectionKey, opts) { updateFullLiveText(opts); }
+    function assembleLiveText() { return state.liveText.text || generateFullLiveText(); }
+
+    /* Sichtbarkeit des «Neu generieren»-Hinweisbalkens steuern */
+    function updateLiveRegenBtnVisibility() {
+      const bar = document.getElementById('live-regen-bar');
+      if (bar) bar.style.display = state.liveText.edited ? 'flex' : 'none';
+    }
+
+    /* Haupttextfeld-Eingabe */
+    function onMainLiveTextInput(value) {
+      state.liveText.text = value;
+      state.liveText.edited = true;
+      updateLiveRegenBtnVisibility();
+    }
+
+    /* Befundtext neu aus Eingaben generieren */
+    function regenLiveText() {
+      state.liveText.edited = false;
+      const fresh = generateFullLiveText();
+      state.liveText.text = fresh;
+      state.liveText.autoText = fresh;
+      const ta = document.getElementById('live-text-main');
+      if (ta) ta.value = fresh;
+      updateLiveRegenBtnVisibility();
+    }
+
+    /* ============================================================
+       G. DIAGRAMME
+       ============================================================ */
+
+    /* Verteilung der Kriteriumsantworten eines Bereichs zählen */
+    function countAreaDistribution(areaId) {
+      const area = udocCore.areas.find(a => a.id === areaId);
+      if (!area) return {};
+      const counts = { unauffaellig: 0, beeintraechtigt: 0, nichtbeurteilbar: 0, offen: 0 };
+      area.criteria.forEach(c => {
+        const ans = state.criterionAnswers[c.id];
+        if (!ans) counts.offen++;
+        else counts[ans] = (counts[ans] || 0) + 1;
+      });
+      return counts;
+    }
+
+    /* SVG-Donut-Diagramm rendern */
+    function renderAreaChart(areaId) {
+      const area = udocCore.areas.find(a => a.id === areaId);
+      const total = area ? area.criteria.length : 4;
+      const dist = countAreaDistribution(areaId);
+      const answered = total - (dist.offen || 0);
+
+      const cx = 60, cy = 60, R = 48, r = 28;
+      const segColors = {
+        unauffaellig:     '#028090',
+        beeintraechtigt:  '#E8A33D',
+        nichtbeurteilbar: '#6D5BA6',
+        offen:            '#CBD5E1'
+      };
+      const segLabels = {
+        unauffaellig:     'unauffällig',
+        beeintraechtigt:  'beeinträchtigt',
+        nichtbeurteilbar: 'nicht beurteilbar',
+        offen:            'offen'
+      };
+
+      // Segmente berechnen
+      const segments = [];
+      let startAngle = -Math.PI / 2;
+      const keys = ['unauffaellig', 'beeintraechtigt', 'nichtbeurteilbar', 'offen'];
+      keys.forEach(key => {
+        const count = dist[key] || 0;
+        if (count === 0) return;
+        const angle = (count / total) * 2 * Math.PI;
+        segments.push({ key, count, startAngle, endAngle: startAngle + angle, color: segColors[key] });
+        startAngle += angle;
+      });
+
+      function polarToCart(angle, radius) {
+        return [cx + radius * Math.cos(angle), cy + radius * Math.sin(angle)];
+      }
+
+      let paths = '';
+      if (segments.length === 0) {
+        // Leerer Ring
+        paths = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#CBD5E1" stroke-width="${R - r}"/>`;
+      } else if (segments.length === 1 && segments[0].count === total) {
+        // Vollständiger Ring
+        paths = `<circle cx="${cx}" cy="${cy}" r="${(R + r) / 2}" fill="none" stroke="${segments[0].color}" stroke-width="${R - r}"/>`;
+      } else {
+        segments.forEach(seg => {
+          const [x1, y1] = polarToCart(seg.startAngle, R);
+          const [x2, y2] = polarToCart(seg.endAngle, R);
+          const [x3, y3] = polarToCart(seg.endAngle, r);
+          const [x4, y4] = polarToCart(seg.startAngle, r);
+          const largeArc = (seg.endAngle - seg.startAngle) > Math.PI ? 1 : 0;
+          const d = [
+            `M ${x1} ${y1}`,
+            `A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}`,
+            `L ${x3} ${y3}`,
+            `A ${r} ${r} 0 ${largeArc} 0 ${x4} ${y4}`,
+            'Z'
+          ].join(' ');
+          paths += `<path d="${d}" fill="${seg.color}"/>`;
+        });
+      }
+
+      // Legende
+      const legendItems = keys
+        .filter(k => (dist[k] || 0) > 0)
+        .map(k => `
+          <div class="legend-item">
+            <div class="legend-dot" style="background:${segColors[k]}"></div>
+            <span>${segLabels[k]} (${dist[k]})</span>
+          </div>`)
+        .join('');
+
+      return `
+        <div class="chart-container">
+          <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg">
+            ${paths}
+            <text x="${cx}" y="${cy - 6}" text-anchor="middle" font-size="14" font-weight="bold" fill="#0D2B55">${answered}</text>
+            <text x="${cx}" y="${cy + 10}" text-anchor="middle" font-size="10" fill="#64748B">von ${total}</text>
+          </svg>
+          <div class="chart-legend">${legendItems}</div>
+        </div>`;
+    }
+
+    /* ============================================================
+       H. RENDERING
+       ============================================================ */
+
+    /* Haupt-Render-Funktion */
+    function render() {
+      renderMainContent();
+      renderLiveTextPanel();
+      updateHeaderMeta();
+    }
+
+    function renderMainContent() {
+      const panel = document.getElementById('main-panel');
+      if (!panel) return;
+      switch (state.nav.view) {
+        case 'start':      panel.innerHTML = renderStartView();      break;
+        case 'criterion':  panel.innerHTML = renderCriterionView();  break;
+        case 'assessment': panel.innerHTML = renderAssessmentView(); break;
+        case 'summary':    panel.innerHTML = renderSummaryView();    break;
+        default:           panel.innerHTML = '';
+      }
+    }
+
+    /* Startansicht */
+    function renderStartView() {
+      const m = state.meta;
+      const isFirst = m.isFirstAssessment;
+
+      const priorEntries = m.priorSessions.map((s, i) => `
+        <div class="session-entry">
+          <div class="session-entry-header">
+            <span class="session-entry-num">Sitzung ${i + 1}</span>
+            <button class="btn btn-ghost btn-sm" onclick="removePriorSession(${s.id})">Entfernen</button>
+          </div>
+          <div class="session-row">
+            <div class="form-group" style="margin-bottom:0">
+              <label>Datum</label>
+              <input type="date" value="${esc(s.date)}" onchange="updatePriorSession(${s.id},'date',this.value)">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Beurteilende Person(en)</label>
+              <input type="text" value="${esc(s.examiner)}" placeholder="Name" oninput="updatePriorSession(${s.id},'examiner',this.value)">
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:8px;margin-bottom:0">
+            <label>Ergebnis / Bemerkung</label>
+            <input type="text" value="${esc(s.result)}" placeholder="z. B. nicht beurteilbar" oninput="updatePriorSession(${s.id},'result',this.value)">
+          </div>
+        </div>`).join('');
+
+      return `
+        <h1>Evaluation der Urteilsfähigkeit</h1>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:var(--spacing-lg)">
+          Erfassen Sie die Angaben zur Beurteilungssituation, bevor Sie beginnen.
+        </p>
+
+        <!-- Karte 1: Beurteilung -->
+        <div class="card">
+          <h3>Beurteilung</h3>
+          <div class="form-group" style="margin-top:var(--spacing-md)">
+            <label>Beurteilende Person(en) <span class="required-star">*</span></label>
+            <textarea id="start-examiners" rows="2"
+              placeholder="Name(n) und Funktion der beurteilenden Person(en)"
+              oninput="state.meta.examiners=this.value;updateFullLiveText({silent:true})"
+            >${esc(m.examiners)}</textarea>
+            <div class="field-error" id="err-examiners"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-md)">
+            <div class="form-group" style="margin-bottom:0">
+              <label>Datum der Beurteilung</label>
+              <input type="date" id="start-assessmentDate"
+                value="${esc(m.assessmentDate)}"
+                onchange="state.meta.assessmentDate=this.value;updateFullLiveText({silent:true})">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Ort</label>
+              <input type="text" id="start-assessmentLocation"
+                value="${esc(m.assessmentLocation)}"
+                placeholder="Klinik / Praxis / Institution"
+                oninput="state.meta.assessmentLocation=this.value;updateFullLiveText({silent:true})">
+            </div>
+          </div>
+        </div>
+
+        <!-- Karte 2: Patientenetikett -->
+        <div class="card">
+          <h3>Patientenetikett</h3>
+          <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:var(--spacing-md)">
+            Entspricht dem aufklebbaren Etikett des Papierformulars. Alle Felder optional — mindestens Nachname oder Kürzel/Fallnummer ist erforderlich.
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-md)">
+            <div class="form-group" style="margin-bottom:0">
+              <label>Vorname</label>
+              <input type="text" id="start-patientFirstName"
+                value="${esc(m.patientFirstName)}"
+                placeholder="Vorname"
+                oninput="state.meta.patientFirstName=this.value;updateHeaderMeta();updateFullLiveText({silent:true})">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Nachname</label>
+              <input type="text" id="start-patientLastName"
+                value="${esc(m.patientLastName)}"
+                placeholder="Nachname"
+                oninput="state.meta.patientLastName=this.value;updateHeaderMeta();updateFullLiveText({silent:true})">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-md);margin-top:var(--spacing-md)">
+            <div class="form-group" style="margin-bottom:0">
+              <label>Geburtsdatum</label>
+              <input type="date" id="start-patientDOB"
+                value="${esc(m.patientDOB)}"
+                onchange="state.meta.patientDOB=this.value;updateFullLiveText({silent:true})">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label>Kürzel / Fallnummer <span class="required-star">*</span></label>
+              <input type="text" id="start-patientRef"
+                value="${esc(m.patientRef)}"
+                placeholder="z. B. AB-2024-001"
+                oninput="state.meta.patientRef=this.value;updateHeaderMeta();updateFullLiveText({silent:true})">
+              <div class="field-error" id="err-patientRef"></div>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:var(--spacing-md);margin-bottom:0">
+            <label>Anschrift <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
+            <textarea id="start-patientAddress" rows="2"
+              placeholder="Strasse, PLZ Ort"
+              oninput="state.meta.patientAddress=this.value"
+            >${esc(m.patientAddress)}</textarea>
+          </div>
+        </div>
+
+        <!-- Karte 3: Ausgangslage -->
+        <div class="start-hero">
+          <div class="eyebrow">Ausgangslage</div>
+          <p style="font-size:13px;color:var(--color-primary);line-height:1.55;margin-bottom:var(--spacing-md)">
+            Anlass/Gründe für eine ausführliche Beurteilung der Urteilsfähigkeit (inkl. kurzer Beschreibung der Entscheidungssituation, der Entscheidungsoptionen, der Tragweite und bestehender Vorabklärungen):
+          </p>
+          <textarea id="start-referenceDecision" rows="4"
+            placeholder="z. B. Einwilligung in die Behandlung mit Medikament X — Anlass: Ablehnung durch die betroffene Person trotz klarer medizinischer Empfehlung…"
+            oninput="state.meta.referenceDecision=this.value;updateFullLiveText({silent:true})"
+            style="background:#fff;font-size:14px"
+          >${esc(m.referenceDecision)}</textarea>
+          <div class="field-error" id="err-referenceDecision"></div>
+        </div>
+
+        <!-- Karte 4: Beurteilungskontext -->
+        <div class="card">
+          <h3>Beurteilungskontext</h3>
+          <div class="form-group" style="margin-top:var(--spacing-sm)">
+            <label>Handelt es sich um die erste Beurteilung?</label>
+            <div style="display:flex;gap:var(--spacing-md);margin-top:6px">
+              <label style="display:flex;align-items:center;gap:6px;font-weight:normal;font-size:14px;cursor:pointer">
+                <input type="radio" name="isFirst" value="true" ${isFirst ? 'checked' : ''}
+                  onchange="state.meta.isFirstAssessment=true;state.meta.priorSessions=[];renderMainContent()">
+                Ja, Erstbeurteilung
+              </label>
+              <label style="display:flex;align-items:center;gap:6px;font-weight:normal;font-size:14px;cursor:pointer">
+                <input type="radio" name="isFirst" value="false" ${!isFirst ? 'checked' : ''}
+                  onchange="state.meta.isFirstAssessment=false;renderMainContent()">
+                Nein, Folgebeurteilung
+              </label>
+            </div>
+          </div>
+          ${!isFirst ? `
+            <div style="margin-top:var(--spacing-md)">
+              <div class="eyebrow" style="margin-bottom:var(--spacing-sm)">Bisherige Sitzungen</div>
+              ${priorEntries || ''}
+              <button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="addPriorSession()">
+                + Sitzung hinzufügen
+              </button>
+            </div>` : ''}
+        </div>
+
+        <div class="info-box" style="margin-top:var(--spacing-md)">
+          <strong>Datenschutz:</strong> Alle Eingaben werden ausschliesslich im Arbeitsspeicher gehalten und beim Schliessen des Browserfensters unwiderruflich gelöscht. Es werden keine Daten gespeichert oder übertragen.
+        </div>
+
+        <div class="nav-bar">
+          <span class="spacer"></span>
+          <button class="btn btn-primary" onclick="goNext()">
+            Beurteilung starten
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>`;
+    }
+
+    /* Kriteriumsansicht */
+    function renderCriterionView() {
+      const item = getEffectiveCriterion();
+      if (!item) return '<p>Kein Element gefunden.</p>';
+
+      const progressHtml = renderProgress();
+
+      if (item.type === 'criterion') {
+        return renderCriterionCard(item, progressHtml);
+      } else {
+        return renderAreaSummaryCard(item, progressHtml);
+      }
+    }
+
+    /* Einzelnes Kriterium */
+    function renderCriterionCard(item, progressHtml) {
+      const area = udocCore.areas.find(a => a.id === item.areaId);
+      const criterion = area ? area.criteria.find(c => c.id === item.criterionId) : null;
+      if (!criterion) return '';
+
+      const selected = state.criterionAnswers[item.criterionId];
+
+      const optionBtns = CRITERION_OPTIONS.map(opt => {
+        const isSelected = selected === opt.id;
+        const selClass = isSelected ? `selected-${opt.id}` : '';
+        return `
+          <button class="option-btn ${selClass}"
+            onclick="selectCriterionOption('${criterion.id}','${opt.id}')">
+            <span class="option-indicator"><span class="option-indicator-dot"></span></span>
+            ${esc(opt.label)}
+          </button>`;
+      }).join('');
+
+      const questionsHtml = criterion.guidingQuestions && criterion.guidingQuestions.length ? `
+        <details class="guiding-questions" open>
+          <summary>
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 7v5M8 5v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Leitfragen
+          </summary>
+          <div class="guiding-questions-body">
+            <ol>${criterion.guidingQuestions.map(q => `<li>${esc(q)}</li>`).join('')}</ol>
+          </div>
+        </details>` : '';
+
+      const noteHtml = criterion.criterionNote ? `
+        <div class="info-box" style="margin-top:var(--spacing-md)">${esc(criterion.criterionNote)}</div>` : '';
+      const areaNoteHtml = area && area.areaNote ? `
+        <div class="info-box" style="margin-top:var(--spacing-md)">${esc(area.areaNote)}</div>` : '';
+
+      return `
+        ${progressHtml}
+
+        <div class="breadcrumb">
+          <span>${esc(item.areaLabel)}</span>
+          <span class="breadcrumb-sep">›</span>
+          <span style="color:var(--color-primary);font-weight:500">${esc(criterion.label)}</span>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">${esc(area ? area.focus : '')}</div>
+          <h2>${esc(criterion.label)}</h2>
+          <p class="definition-text">${esc(criterion.definition)}</p>
+          ${questionsHtml}
+          ${noteHtml}
+          ${areaNoteHtml}
+
+          <div style="margin-top:var(--spacing-lg)">
+            <div class="eyebrow">Beurteilung</div>
+            <div class="option-buttons">
+              ${optionBtns}
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-bar">
+          <button class="btn btn-secondary" onclick="goBack()">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Zurück
+          </button>
+          <span class="spacer"></span>
+          <button class="btn btn-ghost" onclick="goToView('summary')" style="color:var(--color-text-muted)">
+            Zur Übersicht
+          </button>
+          <button class="btn btn-primary" onclick="goNext()">
+            ${state.nav.flatIndex < schedule.length - 1 ? 'Weiter' : 'Weiter →'}
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>`;
+    }
+
+    /* Bereichszusammenfassung */
+    function renderAreaSummaryCard(item, progressHtml) {
+      const area = udocCore.areas.find(a => a.id === item.areaId);
+      if (!area) return '';
+
+      const areaSummary = state.areaSummaries[item.areaId];
+      const selectedSummary = areaSummary ? areaSummary.summaryId : null;
+      const description = areaSummary ? (areaSummary.description || '') : '';
+
+      const scaleBtns = area.summaryScale.map(opt => {
+        const isSelected = selectedSummary === opt.id;
+        const selClass = isSelected ? `sel-${opt.id}` : '';
+        return `
+          <button class="summary-scale-btn ${selClass}"
+            onclick="setAreaSummary('${area.id}','${opt.id}')">
+            ${esc(opt.label)}
+          </button>`;
+      }).join('');
+
+      const noteHtml = area.areaNote ? `
+        <div class="info-box">${esc(area.areaNote)}</div>` : '';
+
+      const isLast = state.nav.flatIndex === schedule.length - 1;
+
+      return `
+        ${progressHtml}
+
+        <div class="breadcrumb">
+          <span>${esc(item.areaLabel)}</span>
+          <span class="breadcrumb-sep">›</span>
+          <span style="color:var(--color-primary);font-weight:500">Bereichszusammenfassung</span>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">Zusammenfassung</div>
+          <h2>${esc(area.label)}</h2>
+          <p class="definition-text">${esc(area.definition)}</p>
+
+          ${renderAreaChart(area.id)}
+          ${noteHtml}
+
+          <div style="margin-top:var(--spacing-lg)">
+            <div class="eyebrow">Gesamtbeurteilung des Bereichs</div>
+            <div class="summary-scale" style="margin-top:var(--spacing-sm)">
+              ${scaleBtns}
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:var(--spacing-lg);margin-bottom:0">
+            <label>Beschreibung der Beeinträchtigungen <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
+            <textarea
+              placeholder="Ergänzende klinische Beschreibung der beobachteten Beeinträchtigungen in diesem Bereich…"
+              oninput="setAreaDescription('${area.id}',this.value)"
+              rows="4">${esc(description)}</textarea>
+          </div>
+        </div>
+
+        <div class="nav-bar">
+          <button class="btn btn-secondary" onclick="goBack()">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Zurück
+          </button>
+          <span class="spacer"></span>
+          <button class="btn btn-ghost" onclick="goToView('summary')" style="color:var(--color-text-muted)">
+            Zur Übersicht
+          </button>
+          <button class="btn btn-primary" onclick="goNext()">
+            ${isLast ? 'Beurteilung' : 'Weiter'}
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>`;
+    }
+
+    /* SAMW-Beurteilungsalgorithmus */
+    function renderAssessmentView() {
+      const s = state.samwAlgorithm;
+
+      // Hilfsfunktion: Ja/Nein-Toggle-Buttons (Schritte 2 und 3)
+      const btnStyle = 'padding:6px 16px;border-radius:4px;border:1px solid var(--color-border);cursor:pointer;font-size:13px;font-weight:500;';
+      const yesno = (step, current) => {
+        const selYes = current === 'ja'   ? 'background:var(--color-accent);color:#fff;border-color:var(--color-accent);' : 'background:#fff;color:var(--color-text);';
+        const selNo  = current === 'nein' ? 'background:var(--color-primary);color:#fff;border-color:var(--color-primary);' : 'background:#fff;color:var(--color-text);';
+        return `
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button style="${btnStyle}${selYes}" onclick="setSamwStep(${step},'ja')">Ja</button>
+            <button style="${btnStyle}${selNo}"  onclick="setSamwStep(${step},'nein')">Nein</button>
+          </div>`;
+      };
+
+      // Schritt-1-Buttons (drei Optionen)
+      const step1Buttons = () => {
+        const selJa    = s.step1 === 'ja'    ? 'background:var(--color-accent);color:#fff;border-color:var(--color-accent);' : 'background:#fff;color:var(--color-text);';
+        const selNein  = s.step1 === 'nein'  ? 'background:var(--color-primary);color:#fff;border-color:var(--color-primary);' : 'background:#fff;color:var(--color-text);';
+        const selKeine = s.step1 === 'keine' ? 'background:var(--color-accent);color:#fff;border-color:var(--color-accent);' : 'background:#fff;color:var(--color-text);';
+        return `
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+            <button style="${btnStyle}${selJa}"    onclick="setSamwStep(1,'ja')">Ja</button>
+            <button style="${btnStyle}${selNein}"  onclick="setSamwStep(1,'nein')">Nein</button>
+            <button style="${btnStyle}${selKeine}" onclick="setSamwStep(1,'keine')">Keine Beeinträchtigungen</button>
+          </div>`;
+      };
+
+      // Ergebnis-Note-Stil
+      const resultBox = (txt) => `<div class="info-box" style="margin-top:10px">${txt}</div>`;
+
+      let stepsHtml = `
+        <div style="margin-bottom:var(--spacing-lg)">
+          <div class="eyebrow">Schritt 1 von 3</div>
+          <p style="margin-top:6px;font-size:14px;font-weight:500">
+            Sind die Kriterien, hinsichtlich derer Beeinträchtigungen bestehen, für die spezifische Entscheidung relevant?
+          </p>
+          ${step1Buttons()}
+          ${s.step1 === 'nein'  ? resultBox('Ergebnis (Schritt 1): <strong>Urteilsfähig</strong> — die bestehenden Beeinträchtigungen sind für diese Entscheidung nicht relevant.') : ''}
+          ${s.step1 === 'keine' ? resultBox('Ergebnis (Schritt 1): <strong>Urteilsfähig</strong> — keine relevanten Beeinträchtigungen festgestellt.') : ''}
+        </div>`;
+
+      if (s.step1 === 'ja') {
+        stepsHtml += `
+          <div style="margin-bottom:var(--spacing-lg)">
+            <div class="eyebrow">Schritt 2 von 3</div>
+            <p style="margin-top:6px;font-size:14px;font-weight:500">
+              Sind die Beeinträchtigungen signifikant?
+            </p>
+            ${yesno(2, s.step2)}
+            ${s.step2 === 'nein' ? resultBox('Ergebnis (Schritt 2): <strong>Urteilsfähig</strong> — die Beeinträchtigungen sind nicht signifikant.') : ''}
+          </div>`;
+      }
+
+      if (s.step1 === 'ja' && s.step2 === 'ja') {
+        stepsHtml += `
+          <div style="margin-bottom:var(--spacing-lg)">
+            <div class="eyebrow">Schritt 3 von 3</div>
+            <p style="margin-top:6px;font-size:14px;font-weight:500">
+              Werden die Beeinträchtigungen durch intakte Fähigkeiten aufgewogen?
+            </p>
+            ${yesno(3, s.step3)}
+            ${s.step3 === 'ja'   ? resultBox('Ergebnis (Schritt 3): <strong>Urteilsfähig</strong> — intakte Fähigkeiten wiegen die Beeinträchtigungen auf.') : ''}
+            ${s.step3 === 'nein' ? resultBox('Ergebnis (Schritt 3): <strong>Urteilsunfähig</strong> — die Beeinträchtigungen werden nicht aufgewogen.') : ''}
+          </div>`;
+      }
+
+      const VERDICT_LABELS = { urteilsfaehig:'Urteilsfähig', urteilsunfaehig:'Urteilsunfähig' };
+      const suggestedHtml = s.suggestedVerdict ? `
+        <div style="margin-top:var(--spacing-md);padding:12px 16px;border-radius:var(--radius-sm);border:2px solid var(--color-accent);background:var(--color-accent-light)">
+          <span style="font-size:12px;font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--color-accent)">Algorithmus-Ergebnis</span><br>
+          <span style="font-size:15px;font-weight:600;color:var(--color-primary)">${esc(VERDICT_LABELS[s.suggestedVerdict] || s.suggestedVerdict)}</span>
+          <span style="font-size:12px;color:var(--color-text-muted);display:block;margin-top:4px">Das Gesamturteil im nächsten Schritt kann abweichen.</span>
+        </div>` : '';
+
+      return `
+        <h1>Beurteilung</h1>
+        <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:var(--spacing-lg)">
+          SAMW-Entscheidungsalgorithmus — geführte Einschätzung in drei Schritten.
+        </p>
+
+        <div class="card">
+          <h3>Entscheidungsalgorithmus</h3>
+          <p style="font-size:13px;color:var(--color-text-muted);margin-top:6px;margin-bottom:var(--spacing-lg)">
+            Beantworten Sie die Fragen auf Grundlage Ihrer bisherigen Beobachtungen. Das Ergebnis wird als Vorschlag ins Gesamturteil übernommen und bleibt überschreibbar.
+          </p>
+          ${stepsHtml}
+          ${suggestedHtml}
+        </div>
+
+        <div class="nav-bar">
+          <button class="btn btn-secondary" onclick="goBack()">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Zurück
+          </button>
+          <span class="spacer"></span>
+          <button class="btn btn-primary" onclick="goNext()">
+            Zum Gesamturteil
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>`;
+    }
+
+    /* Übersichtsansicht / Abschluss */
+    function renderSummaryView() {
+      // Übersichtstabelle
+      let tableRows = '';
+      udocCore.areas.forEach(area => {
+        // Bereichszeile
+        tableRows += `
+          <tr class="area-row">
+            <td colspan="2">${esc(area.label)}</td>
+          </tr>`;
+        // Kriteriumszeilen
+        area.criteria.forEach(c => {
+          const ans = state.criterionAnswers[c.id];
+          const pill = ans ? `<span class="status-pill pill-${ans}">${esc(CRITERION_OPTIONS.find(o => o.id === ans)?.label || ans)}</span>`
+                          : `<span class="status-pill pill-offen">offen</span>`;
+          // Link zum Kriterium
+          const schedIdx = schedule.findIndex(s => s.type === 'criterion' && s.criterionId === c.id);
+          tableRows += `
+            <tr>
+              <td>
+                <a href="#" onclick="event.preventDefault();goToView('criterion',${schedIdx})" style="color:var(--color-accent);text-decoration:none;font-size:13px">${esc(c.label)}</a>
+              </td>
+              <td>${pill}</td>
+            </tr>`;
+        });
+        // Zusammenfassungszeile
+        const summ = state.areaSummaries[area.id];
+        const summId = summ ? summ.summaryId : null;
+        const summLabel = summId ? (area.summaryScale.find(s => s.id === summId)?.label || summId) : null;
+        const summPill = summLabel
+          ? `<span class="status-pill pill-${summId}">${esc(summLabel)}</span>`
+          : `<span class="status-pill pill-offen">offen</span>`;
+        const summIdx = schedule.findIndex(s => s.type === 'areaSummary' && s.areaId === area.id);
+        tableRows += `
+          <tr class="summary-row">
+            <td>
+              <a href="#" onclick="event.preventDefault();goToView('criterion',${summIdx})" style="color:var(--color-text-muted);text-decoration:none;font-size:13px">Bereichszusammenfassung</a>
+            </td>
+            <td>${summPill}</td>
+          </tr>`;
+      });
+
+      // Urteilsoptionen
+      const verdictOptions = [
+        { id: 'urteilsfaehig',    label: 'Urteilsfähig', desc: 'Die Person ist hinsichtlich der vorliegenden Entscheidung urteilsfähig.' },
+        { id: 'urteilsunfaehig',  label: 'Urteilsunfähig', desc: 'Die Person ist hinsichtlich der vorliegenden Entscheidung urteilsunfähig.' },
+        { id: 'reevaluation',     label: 'Re-Evaluation empfohlen', desc: 'Zum jetzigen Zeitpunkt ist keine abschliessende Beurteilung möglich.' },
+        { id: 'nichtbeurteilbar', label: 'Nicht beurteilbar', desc: 'Die Urteilsfähigkeit konnte im Rahmen dieser Untersuchung nicht beurteilt werden.' }
+      ].map(v => {
+        const isSel = state.conclusion.verdict === v.id;
+        return `
+          <div class="verdict-option ${isSel ? 'selected' : ''}" onclick="setConclusion('verdict','${v.id}');renderMainContent()">
+            <input type="radio" name="verdict" value="${v.id}" ${isSel ? 'checked' : ''} onclick="event.stopPropagation()">
+            <div>
+              <div class="verdict-option-label">${esc(v.label)}</div>
+              <div class="verdict-option-desc">${esc(v.desc)}</div>
+            </div>
+          </div>`;
+      }).join('');
+
+      // Rechtsgrundlage (nur bei urteilsunfaehig)
+      let legalHtml = '';
+      if (state.conclusion.verdict === 'urteilsunfaehig') {
+        const options = LEGAL_GROUNDS.map(g =>
+          `<option value="${g.id}" ${state.conclusion.legalGround === g.id ? 'selected' : ''}>${esc(g.label)}</option>`
+        ).join('');
+        legalHtml = `
+          <div class="form-group" style="margin-top:var(--spacing-md)">
+            <label>Ursache der Urteilsunfähigkeit (Art. 16 ZGB)</label>
+            <select onchange="setConclusion('legalGround',this.value)">
+              <option value="">— Bitte wählen —</option>
+              ${options}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Spezifizierung / Ergänzung <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
+            <textarea placeholder="Nähere Bezeichnung der Ursache oder ergänzende Hinweise…"
+              oninput="setConclusion('legalDetail',this.value)"
+              rows="3">${esc(state.conclusion.legalDetail)}</textarea>
+          </div>`;
+      }
+
+      const declChecked = state.conclusion.declaration ? 'checked' : '';
+
+      return `
+        <h1>Übersicht und Abschluss</h1>
+
+        <div class="card">
+          <h3>Kriteriumsübersicht</h3>
+          <table class="overview-table" style="margin-top:var(--spacing-md)">
+            <thead>
+              <tr>
+                <th>Kriterium</th>
+                <th>Beurteilung</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRows}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>Gesamturteil</h3>
+          <div style="margin-top:var(--spacing-md)">
+            ${verdictOptions}
+          </div>
+
+          <div class="form-group" style="margin-top:var(--spacing-lg);margin-bottom:0">
+            <label>Abschliessende Begründung <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
+            <textarea
+              placeholder="Klinische Begründung des Gesamturteils. Bitte gehen Sie ggf. ein auf: unterstützende Massnahmen zur Förderung der Urteilsfähigkeit, Notwendigkeit weiterführender Abklärungen, Einholung einer Zweitmeinung, empfohlener Zeitpunkt einer Reevaluation."
+              rows="5"
+              oninput="setConclusion('reasoning',this.value)">${esc(state.conclusion.reasoning)}</textarea>
+          </div>
+          ${legalHtml}
+        </div>
+
+        <div class="card">
+          <h3>Erklärung</h3>
+          <div class="declaration-box">
+            <input type="checkbox" id="declaration-cb" ${declChecked}
+              onchange="state.conclusion.declaration=this.checked">
+            <label for="declaration-cb">
+              Ich bestätige, meine eigenen Werthaltungen und mögliche Interessenkonflikte kritisch reflektiert zu haben und keine Befangenheit zu erkennen, die die vorliegende Beurteilung wesentlich beeinflusst hätte.
+            </label>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn-secondary" onclick="goBack()">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4l-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Zurück
+          </button>
+          <span style="flex:1"></span>
+          <button class="btn btn-secondary" onclick="copyBefundToClipboard()">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <rect x="5" y="5" width="9" height="11" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M11 5V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h2" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            Befund kopieren
+          </button>
+          <button class="btn btn-primary" onclick="openPrintView()">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6V2h8v4" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="1" y="6" width="14" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="4" y="10" width="8" height="4" fill="white" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            Druckansicht
+          </button>
+        </div>`;
+    }
+
+    /* Fortschrittsanzeige */
+    function renderProgress() {
+      const current = state.nav.flatIndex + 1;
+      const total = schedule.length;
+      const item = getEffectiveCriterion();
+      const typeLabel = item && item.type === 'areaSummary' ? 'Bereichszusammenfassung' : 'Kriterium';
+      return `
+        <div class="progress-counter" style="margin-bottom:var(--spacing-md)">
+          ${typeLabel} ${current} von ${total}
+        </div>`;
+    }
+
+    /* Kopfzeile-Metadaten aktualisieren */
+    function updateHeaderMeta() {
+      const meta = document.getElementById('header-meta');
+      if (!meta) return;
+      const m = state.meta;
+      const patientName = [m.patientFirstName, m.patientLastName].filter(Boolean).join(' ');
+      const patientDisplay = patientName || m.patientRef;
+      const pat = patientDisplay ? `<div class="meta-item"><span class="meta-label">Person</span><span>${esc(patientDisplay)}</span></div>` : '';
+      const ex  = m.examiners ? `<div class="meta-item"><span class="meta-label">Untersucher/in</span><span>${esc(m.examiners.split('\n')[0].slice(0, 40))}</span></div>` : '';
+      const dat = m.assessmentDate ? `<div class="meta-item"><span class="meta-label">Datum</span><span>${esc(m.assessmentDate)}</span></div>` : '';
+      meta.innerHTML = pat + ex + dat;
+    }
+
+    /* Live-Text-Panel rendern — einziges Textfeld */
+    function renderLiveTextPanel() {
+      const body = document.getElementById('live-panel-body');
+      if (!body) return;
+
+      const text = state.liveText.text || '';
+      const edited = state.liveText.edited;
+
+      if (!document.getElementById('live-text-main')) {
+        // Erstaufbau
+        body.style.display = 'flex';
+        body.style.flexDirection = 'column';
+        body.style.height = '100%';
+        body.innerHTML = `
+          <div id="live-regen-bar" style="display:${edited ? 'flex' : 'none'};align-items:center;gap:8px;padding:6px 12px;background:#fff8e6;border-bottom:1px solid var(--color-amber);font-size:12px;color:#7a5a00;flex-shrink:0">
+            <span>Manuell bearbeitet — Auto-Generierung pausiert.</span>
+            <button class="btn btn-ghost btn-sm" onclick="regenLiveText()" style="margin-left:auto;color:var(--color-primary)">Endbefund generieren</button>
+          </div>
+          <textarea id="live-text-main"
+            oninput="onMainLiveTextInput(this.value)"
+            spellcheck="true"
+            style="flex:1;width:100%;resize:none;border:none;outline:none;padding:12px;font-size:12px;font-family:var(--font-sans);line-height:1.6;background:#fff;color:var(--color-text)"
+          >${esc(text)}</textarea>`;
+      } else {
+        // Nur Inhalt aktualisieren, wenn nicht im Fokus
+        const ta = document.getElementById('live-text-main');
+        if (ta && document.activeElement !== ta) ta.value = text;
+        updateLiveRegenBtnVisibility();
+      }
+    }
+
+    /* ============================================================
+       I. AUSGABE
+       ============================================================ */
+
+    /* Befund in die Zwischenablage kopieren (inkl. Kopfblock) */
+    async function copyBefundToClipboard() {
+      // Aktuellen Textfeldinhalt bevorzugen (enthält ggf. manuelle Bearbeitungen)
+      const ta = document.getElementById('live-text-main');
+      const text = (ta ? ta.value : null) || state.liveText.text || generateFullLiveText();
+      if (!text.trim()) {
+        alert('Es wurde noch kein Befundtext erstellt. Bitte führen Sie zuerst die Beurteilung durch.');
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        showCopyFeedback('Befund kopiert!');
+      } catch (e) {
+        // Fallback: execCommand
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.top = '-9999px';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          const success = document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (success) {
+            showCopyFeedback('Befund kopiert!');
+          } else {
+            showCopyModal(text);
+          }
+        } catch (e2) {
+          showCopyModal(text);
+        }
+      }
+    }
+
+    /* Kopier-Feedback */
+    function showCopyFeedback(msg) {
+      const el = document.createElement('div');
+      el.textContent = msg;
+      el.style.cssText = `
+        position:fixed;bottom:24px;right:24px;
+        background:#028090;color:#fff;
+        padding:10px 18px;border-radius:6px;
+        font-size:14px;z-index:9999;
+        box-shadow:0 4px 12px rgba(0,0,0,0.2);
+        transition:opacity 0.3s;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 2000);
+    }
+
+    /* Kopier-Modal (Fallback) */
+    function showCopyModal(text) {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.innerHTML = `
+        <div class="modal-box">
+          <h3>Befund manuell kopieren</h3>
+          <p style="font-size:13px;color:var(--color-text-muted);margin-bottom:var(--spacing-md)">
+            Bitte markieren Sie den Text und kopieren Sie ihn mit Ctrl+C / Cmd+C.
+          </p>
+          <textarea readonly onclick="this.select()">${esc(text)}</textarea>
+          <div class="modal-actions">
+            <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">Schliessen</button>
+          </div>
+        </div>`;
+      document.body.appendChild(overlay);
+      const ta = overlay.querySelector('textarea');
+      if (ta) { ta.focus(); ta.select(); }
+    }
+
+    /* Druckansicht öffnen */
+    function openPrintView() {
+      const html = buildPrintDocument();
+      const printEl = document.getElementById('print-view');
+      printEl.innerHTML = html;
+      window.print();
+    }
+
+    /* Druckdokument aufbauen */
+    function buildPrintDocument() {
+      const m = state.meta;
+      const conclusion = state.conclusion;
+      const patientName = [m.patientFirstName, m.patientLastName].filter(Boolean).join(' ');
+      const VERDICT_LABELS_PRINT = {
+        urteilsfaehig:    'Urteilsfähig',
+        urteilsunfaehig:  'Urteilsunfähig',
+        reevaluation:     'Re-Evaluation empfohlen',
+        nichtbeurteilbar: 'Nicht beurteilbar'
+      };
+
+      // Kopfzeile
+      let html = `
+        <h1>Evaluation der Urteilsfähigkeit (U-Doc)</h1>
+        <div class="print-meta">
+          <table>
+            <tr><td>Beurteilende Person(en):</td><td>${esc(m.examiners || '—')}</td></tr>
+            <tr><td>Datum der Beurteilung:</td><td>${esc(m.assessmentDate || '—')}</td></tr>
+            <tr><td>Ort:</td><td>${esc(m.assessmentLocation || '—')}</td></tr>
+            <tr><td style="border-top:0.5pt solid #ddd"></td><td style="border-top:0.5pt solid #ddd"></td></tr>
+            ${patientName ? `<tr><td>Patient/in:</td><td>${esc(patientName)}</td></tr>` : ''}
+            ${m.patientDOB     ? `<tr><td>Geburtsdatum:</td><td>${esc(m.patientDOB)}</td></tr>` : ''}
+            ${m.patientRef     ? `<tr><td>Kürzel / Fallnummer:</td><td>${esc(m.patientRef)}</td></tr>` : ''}
+            ${m.patientAddress ? `<tr><td>Anschrift:</td><td style="white-space:pre-wrap">${esc(m.patientAddress)}</td></tr>` : ''}
+            <tr><td style="border-top:0.5pt solid #ddd"></td><td style="border-top:0.5pt solid #ddd"></td></tr>
+            <tr><td>Beurteilung:</td><td>${m.isFirstAssessment ? 'Erstbeurteilung' : 'Folgebeurteilung'}</td></tr>
+          </table>
+        </div>`;
+
+      // Ausgangslage
+      if (m.referenceDecision.trim()) {
+        html += `<h2>Ausgangslage</h2>
+          <div class="print-text">${esc(m.referenceDecision.trim())}</div>`;
+      }
+
+      // Bisherige Sitzungen
+      if (!m.isFirstAssessment && m.priorSessions.length > 0) {
+        html += `<h2>Bisherige Sitzungen</h2>
+          <table>
+            <thead><tr><th>#</th><th>Datum</th><th>Beurteilende Person(en)</th><th>Ergebnis</th></tr></thead>
+            <tbody>
+              ${m.priorSessions.map((s, i) => `
+                <tr>
+                  <td>${i + 1}</td>
+                  <td>${esc(s.date)}</td>
+                  <td>${esc(s.examiner)}</td>
+                  <td>${esc(s.result)}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>`;
+      }
+
+      // Bereiche (strukturierte Übersicht mit Donut-Diagrammen E3 + E4)
+      html += `<div class="print-donut-row">`;
+      udocCore.areas.forEach(area => {
+        const summ = state.areaSummaries[area.id];
+        const summId = summ ? summ.summaryId : null;
+        const summLabel = summId ? (area.summaryScale.find(s => s.id === summId)?.label || summId) : '—';
+        html += `<div class="print-donut-cell">
+          <div class="print-area-title">${esc(area.label)}</div>
+          ${renderAreaChart(area.id)}
+          <div class="print-area-summary-label">${esc(summLabel)}</div>
+        </div>`;
+      });
+      html += `</div>`;
+
+      // Kriterientabellen pro Bereich
+      udocCore.areas.forEach(area => {
+        html += `<h2 class="print-area-h2">${esc(area.label)}</h2>
+          <table>
+            <thead><tr><th>Kriterium</th><th>Beurteilung</th></tr></thead>
+            <tbody>`;
+        area.criteria.forEach(c => {
+          const ans = state.criterionAnswers[c.id];
+          const ansLabel = ans ? (CRITERION_OPTIONS.find(o => o.id === ans)?.label || ans) : 'offen';
+          html += `<tr><td>${esc(c.label)}</td><td><em>${esc(ansLabel)}</em></td></tr>`;
+        });
+        html += `</tbody></table>`;
+        const summ = state.areaSummaries[area.id];
+        const summId = summ ? summ.summaryId : null;
+        const summLabel = summId ? (area.summaryScale.find(s => s.id === summId)?.label || summId) : 'offen';
+        html += `<p style="margin-bottom:2pt"><strong>Gesamtbeurteilung:</strong> ${esc(summLabel)}</p>`;
+        const desc = summ ? (summ.description || '').trim() : '';
+        if (desc) html += `<div class="print-text" style="margin-top:4pt">${esc(desc)}</div>`;
+      });
+
+      // SAMW-Beurteilungsfragen
+      const sa = state.samwAlgorithm;
+      const SAMW_LABELS_PRINT = { ja: 'Ja', nein: 'Nein', keine: 'Keine Beeinträchtigungen' };
+      html += `<h2>Beurteilung (SAMW-Algorithmus)</h2>
+        <div class="samw-box">
+          <div class="samw-step"><strong>Schritt 1:</strong> Sind die beeinträchtigten Kriterien für diese Entscheidung relevant? — ${esc(sa.step1 ? SAMW_LABELS_PRINT[sa.step1] : '—')}</div>
+          ${sa.step1 === 'ja' ? `<div class="samw-step"><strong>Schritt 2:</strong> Sind die Beeinträchtigungen signifikant? — ${esc(sa.step2 ? SAMW_LABELS_PRINT[sa.step2] : '—')}</div>` : ''}
+          ${sa.step1 === 'ja' && sa.step2 === 'ja' ? `<div class="samw-step"><strong>Schritt 3:</strong> Werden die Beeinträchtigungen durch intakte Fähigkeiten aufgewogen? — ${esc(sa.step3 ? SAMW_LABELS_PRINT[sa.step3] : '—')}</div>` : ''}
+          ${sa.suggestedVerdict ? `<div class="samw-step" style="margin-top:6pt"><strong>Algorithmus-Ergebnis:</strong> ${esc(VERDICT_LABELS_PRINT[sa.suggestedVerdict] || sa.suggestedVerdict)}</div>` : ''}
+        </div>`;
+
+      // Gesamturteil — hervorgehobene Box (E2)
+      html += `<h2>Gesamturteil</h2>`;
+      const verdictLabel = conclusion.verdict ? (VERDICT_LABELS_PRINT[conclusion.verdict] || conclusion.verdict) : '—';
+      const verdictColor = conclusion.verdict === 'urteilsfaehig'   ? '#d4edda'
+                         : conclusion.verdict === 'urteilsunfaehig' ? '#f8d7da'
+                         : '#fff3cd';
+      const verdictBorder = conclusion.verdict === 'urteilsfaehig'   ? '#28a745'
+                          : conclusion.verdict === 'urteilsunfaehig' ? '#dc3545'
+                          : '#ffc107';
+      html += `<div class="print-verdict-box" style="background:${verdictColor};border-left:3pt solid ${verdictBorder}">
+        <span class="print-verdict-label">Urteil:</span>
+        <span class="print-verdict-value">${esc(verdictLabel)}</span>
+      </div>`;
+
+      if (conclusion.verdict === 'urteilsunfaehig' && conclusion.legalGround) {
+        const lg = LEGAL_GROUNDS.find(g => g.id === conclusion.legalGround);
+        html += `<p><strong>Ursache der Urteilsunfähigkeit:</strong> ${esc(lg ? lg.label : conclusion.legalGround)}</p>`;
+        if (conclusion.legalDetail) html += `<p><strong>Spezifizierung:</strong> ${esc(conclusion.legalDetail)}</p>`;
+      }
+
+      if (conclusion.reasoning.trim()) {
+        html += `<h3>Abschliessende Begründung</h3>
+          <div class="print-text">${esc(conclusion.reasoning.trim())}</div>`;
+      }
+
+      // Befundtext — neue Seite, kompakter Patientenstreifen, nur body aus buildEndbefund() (D2, D4)
+      const befund = buildEndbefund();
+      if (befund.body.trim()) {
+        const patientStrip = [
+          patientName || m.patientRef || null,
+          m.patientDOB ? 'geb. ' + m.patientDOB : null,
+          m.patientRef && patientName ? m.patientRef : null
+        ].filter(Boolean).join(' · ');
+        html += `<div class="print-befund-section">
+          ${patientStrip ? `<div class="print-patient-strip">${esc(patientStrip)}</div>` : ''}
+          <h2 style="margin-top:8pt">Befundtext</h2>
+          <div class="print-text">${esc(befund.body)}</div>
+        </div>`;
+      }
+
+      // Patientenorientierte Information
+      html += `
+        <div class="patient-info-box">
+          <strong>Information zur Dokumentation:</strong><br>
+          Diese Dokumentation hält fest, wie die Urteilsfähigkeit hinsichtlich der vorliegenden Entscheidung beurteilt wurde. Die Beurteilung erfolgte anhand von drei Bereichen mit je vier Kriterien: Erkenntnisfähigkeit, Wertungsfähigkeit sowie Willensbildung und -umsetzung. Das Ergebnis bezieht sich ausschliesslich auf die dokumentierte Entscheidungssituation und ist nicht als allgemeine Aussage über die Persönlichkeit oder Kompetenz der untersuchten Person zu verstehen.
+        </div>`;
+
+      // Persönliche Erklärung
+      if (conclusion.declaration) {
+        html += `<p style="margin-top:10pt;font-size:9pt;color:#333;font-style:italic">
+          Ich bestätige, meine eigenen Werthaltungen und mögliche Interessenkonflikte kritisch reflektiert zu haben und keine Befangenheit zu erkennen, die die vorliegende Beurteilung wesentlich beeinflusst hätte.
+        </p>`;
+      }
+
+      // Unterschriftsfelder — Ort + Datum aus state (D3)
+      const sigName = m.examiners ? m.examiners.split('\n')[0] : 'Beurteilende Person';
+      const sigLocation = [m.assessmentLocation, m.assessmentDate].filter(Boolean).join(', ');
+      html += `
+        <div class="sig-block" style="margin-top:16pt">
+          <table style="border:none;width:100%">
+            <tr>
+              <td style="border:none;padding:0;width:55%;vertical-align:bottom">
+                <div class="sig-line"></div>
+                <p style="font-size:8pt;color:#666;margin-top:3pt">${esc(sigName)}</p>
+              </td>
+              <td style="border:none;padding:0;width:10%"></td>
+              <td style="border:none;padding:0;width:35%;vertical-align:bottom">
+                <div class="sig-line" style="width:100%;display:block"></div>
+                <p style="font-size:8pt;color:#666;margin-top:3pt">${esc(sigLocation || 'Ort, Datum')}</p>
+              </td>
+            </tr>
+          </table>
+        </div>`;
+
+      return html;
+    }
+
+    /* ============================================================
+       HILFSFUNKTIONEN
+       ============================================================ */
+
+    /* HTML-Sonderzeichen escapen */
+    function esc(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    /* ============================================================
+       SCHRIFTGRÖSSEN-STEUERUNG
+       ============================================================ */
+
+    /* Skalierungsstufen — 100 % entspricht der Standardansicht */
+    const FONT_SCALE_STEPS = [0.9, 1.0, 1.1, 1.25, 1.4];
+    let fontScaleIndex = 1; // Index 1 = 1.0 = Standard
+
+    /* Aktuelle Skalierung anwenden und Schaltflächen-Zustand aktualisieren */
+    function applyFontScale() {
+      const scale = FONT_SCALE_STEPS[fontScaleIndex];
+      // Skaliert die gesamte Bildschirmansicht; im Druck via @media print zurückgesetzt
+      document.documentElement.style.zoom = scale;
+
+      const decBtn   = document.getElementById('fs-decrease');
+      const incBtn   = document.getElementById('fs-increase');
+      const resetBtn = document.getElementById('fs-reset');
+      if (decBtn) decBtn.disabled = (fontScaleIndex === 0);
+      if (incBtn) incBtn.disabled = (fontScaleIndex === FONT_SCALE_STEPS.length - 1);
+      if (resetBtn) {
+        resetBtn.title = 'Standardgrösse — aktuell ' + Math.round(scale * 100) + ' %';
+      }
+    }
+
+    /* Schrift um eine Stufe vergrössern (+1) oder verkleinern (-1) */
+    function changeFontSize(direction) {
+      const next = fontScaleIndex + direction;
+      if (next < 0 || next > FONT_SCALE_STEPS.length - 1) return;
+      fontScaleIndex = next;
+      applyFontScale();
+    }
+
+    /* Schriftgrösse auf Standard zurücksetzen */
+    function resetFontSize() {
+      fontScaleIndex = 1;
+      applyFontScale();
+    }
+
+    /* ============================================================
+       J. INITIALISIERUNG
+       ============================================================ */
+    function init() {
+      initState();
+      render();
+      applyFontScale();
+    }
+
+    // Anwendung starten
+    init();
+  </script>
+</body>
+</html>
