@@ -339,12 +339,28 @@
     .breadcrumb {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
+      row-gap: 4px;
       gap: 6px;
       font-size: 13px;
       color: var(--color-text-muted);
       margin-bottom: var(--spacing-md);
     }
     .breadcrumb-sep { opacity: 0.4; }
+    .breadcrumb-active {
+      color: var(--color-primary);
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .breadcrumb-link {
+      color: var(--color-text-muted);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .breadcrumb-link:hover {
+      color: var(--color-primary);
+      text-decoration: underline;
+    }
 
     /* Optionsschalter (3 Optionen) */
     .option-buttons {
@@ -603,6 +619,154 @@
     .pill-mittelgradig     { background: var(--color-amber-light); color: #a06010; }
     .pill-schwer           { background: #fdf0ef; color: #c0392b; }
 
+    /* Relevanz-Folgefrage */
+    .relevanz-box {
+      margin-top: var(--spacing-md);
+      padding: 12px 16px;
+      border: 1px solid var(--color-amber);
+      border-left: 4px solid var(--color-amber);
+      border-radius: var(--radius-sm);
+      background: var(--color-amber-light);
+    }
+    .relevanz-box p {
+      font-size: 13px;
+      color: var(--color-primary);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .relevanz-btns { display: flex; gap: 8px; }
+    .relevanz-btn {
+      padding: 5px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-amber);
+      background: #fff;
+      color: var(--color-text);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .relevanz-btn:hover { background: var(--color-amber-light); }
+    .relevanz-btn.active-ja   { background: var(--color-amber); color: #fff; border-color: var(--color-amber); }
+    .relevanz-btn.active-nein { background: #c87941; color: #fff; border-color: #c87941; }
+
+    /* Begründungsfeld */
+    .begruendung-group {
+      margin-top: var(--spacing-md);
+    }
+    .begruendung-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      margin-bottom: 4px;
+    }
+
+    /* Pflichtfeld-Hinweis */
+    .pflicht-hinweis {
+      color: #c0392b;
+      font-size: 13px;
+      padding: 8px 12px;
+      border: 1px solid #f0a0a0;
+      border-radius: var(--radius-sm);
+      background: #fff5f5;
+    }
+
+    /* Pflichtfeld-Styling (leichtes Orange) */
+    .required-field input[type="text"],
+    .required-field input[type="date"],
+    .required-field textarea {
+      background: #fff9f0;
+      border-color: var(--color-amber);
+    }
+    .required-field input[type="text"]:focus,
+    .required-field input[type="date"]:focus,
+    .required-field textarea:focus {
+      border-color: var(--color-amber);
+      box-shadow: 0 0 0 3px rgba(232,163,61,0.15);
+    }
+
+    /* Live-Panel — Charts und Fortschritt */
+    .live-charts-row {
+      display: flex;
+      justify-content: space-around;
+      padding: 8px var(--spacing-md);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-bg);
+      flex-shrink: 0;
+    }
+    .live-chart-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .live-chart-label {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      text-align: center;
+    }
+    .live-progress-wrap {
+      padding: 6px var(--spacing-md) 8px;
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-bg);
+      flex-shrink: 0;
+    }
+    .live-progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--color-text-muted);
+      font-family: var(--font-mono);
+      margin-bottom: 4px;
+    }
+    .live-progress-track {
+      height: 4px;
+      background: var(--color-open);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .live-progress-fill {
+      height: 100%;
+      background: var(--color-accent);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    /* Modul-Auswahl */
+    .module-option {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-left-width: 3px;
+      border-left-color: var(--color-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+      background: #fff;
+      margin-bottom: var(--spacing-sm);
+    }
+    .module-option:hover { background: var(--color-bg); }
+    .module-option.active {
+      border-left-color: var(--color-accent);
+      background: var(--color-accent-light);
+    }
+    .module-option input[type="checkbox"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--color-accent);
+      width: 16px;
+      height: 16px;
+    }
+    .module-option-title { font-weight: 600; font-size: 14px; color: var(--color-primary); }
+    .module-option-desc  { font-size: 12px; color: var(--color-text-muted); margin-top: 2px; line-height: 1.4; }
+
     /* ============================================================
        4. ÜBERSICHT / ABSCHLUSS
        ============================================================ */
@@ -767,7 +931,7 @@
       #print-view .samw-step { margin-bottom: 3pt; }
 
       /* E4: Bereichstitel in Kapitälchen */
-      #print-view .print-area-h2 { font-variant: small-caps; letter-spacing: 0.04em; }
+      #print-view .print-area-h2 { text-transform: uppercase; letter-spacing: 0.04em; }
       #print-view td em { font-style: italic; color: #444; }
 
       /* E2: Gesamturteil-Box */
@@ -778,7 +942,7 @@
       /* E3: Donut-Diagramme nebeneinander */
       #print-view .print-donut-row { display: flex; gap: 0; margin-bottom: 8pt; page-break-inside: avoid; }
       #print-view .print-donut-cell { flex: 1; text-align: center; padding: 4pt; }
-      #print-view .print-area-title { font-size: 8pt; font-weight: bold; font-variant: small-caps; letter-spacing: 0.05em; margin-bottom: 4pt; color: #0D2B55; }
+      #print-view .print-area-title { font-size: 8pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4pt; color: #0D2B55; }
       #print-view .print-area-summary-label { font-size: 8pt; color: #444; margin-top: 3pt; font-style: italic; }
       #print-view .chart-container { display: flex; flex-direction: column; align-items: center; gap: 4pt; }
       #print-view .chart-legend { font-size: 7pt; }
@@ -826,6 +990,9 @@
       </div>
       <div id="live-panel-body"></div>
       <div id="live-panel-footer">
+        <div id="live-mandatory-warning" class="pflicht-hinweis" style="display:none;margin-bottom:8px;font-size:12px">
+          Bitte für alle als «beeinträchtigt» oder «nicht beurteilbar» bewerteten Kriterien eine Begründung eingeben sowie für «beeinträchtigt»-Bewertungen die Relevanzfrage beantworten.
+        </div>
         <button class="btn btn-secondary btn-full btn-sm" onclick="openPrintView()">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M4 6V2h8v4" stroke="currentColor" stroke-width="1.5"/>
@@ -1028,9 +1195,208 @@
     ];
 
     /* ============================================================
-       B. EXTENSION MODULES (Meilenstein 2)
+       B. EXTENSION MODULES
        ============================================================ */
-    const extensionModules = {};
+    const extensionModules = {
+      gi: {
+        id: 'gi',
+        label: 'Geschlechtsinkongruenz',
+        description: 'Angepasste Leitfragen und nicht-pathologisierende Terminologie für Personen mit Geschlechtsinkongruenz bei geschlechtsangleichenden Massnahmen und verwandten Entscheidungssituationen.',
+        coreOverrides: {
+          'erkenntnis-info': {
+            guidingQuestions: [
+              'Können Sie in eigenen Worten beschreiben, was eine geschlechtsangleichende Massnahme bei Ihnen bewirken würde — auch hinsichtlich umkehrbarer und nicht umkehrbarer Veränderungen?',
+              'Was würde geschehen, wenn Sie sich gegen die Massnahme oder für ein Abwarten entscheiden?'
+            ]
+          },
+          'erkenntnis-folgen': {
+            guidingQuestions: [
+              'Welche konkreten Auswirkungen hätte die Entscheidung auf Ihren Alltag?',
+              'Welche Folgen sehen Sie für Ihre Zukunft — auch über die nächsten Jahre hinaus?'
+            ]
+          },
+          'erkenntnis-krankheit': {
+            label: 'Verständnis der diagnostischen Einschätzung',
+            definition: 'Die Person erkennt die fachliche Einschätzung ihrer Situation, oder kann eine abweichende Sichtweise plausibel darlegen.',
+            guidingQuestions: [
+              'Wie verstehen Sie die fachliche Einschätzung Ihrer Situation?',
+              'Falls Sie diese anders sehen — können Sie Ihre Sichtweise beschreiben?'
+            ]
+          },
+          'erkenntnis-behandlung': {
+            label: 'Verständnis der fachlichen Empfehlung',
+            definition: 'Die Person erkennt, dass das empfohlene Vorgehen potenziell zu ihren Gunsten ist, oder kann ihre abweichende Einschätzung plausibel darlegen.',
+            guidingQuestions: [
+              'Wie verstehen Sie das empfohlene Vorgehen?',
+              'Worin sehen Sie den möglichen Nutzen — und falls Sie das anders einschätzen, woran liegt das?'
+            ]
+          },
+          'wertung-werte': {
+            label: 'Bezug zu Selbstverständnis und Werthaltungen',
+            definition: 'Die Person kann die Entscheidung nachvollziehbar mit ihrem Selbstverständnis und ihren persönlichen Werthaltungen in Verbindung bringen.',
+            guidingQuestions: [
+              'Warum ist diese Veränderung für Sie persönlich wichtig?',
+              'Wie passt diese Entscheidung zu dem, was Ihnen in Ihrem Leben wichtig ist, und zu Ihrem Selbstverständnis?'
+            ]
+          },
+          'wertung-lebensgeschichte': {
+            guidingQuestions: [
+              'Wie ordnet sich diese Entscheidung in Ihren bisherigen Weg ein?',
+              'Wie stellen Sie sich vor, in einigen Jahren auf diese Entscheidung zurückzublicken?'
+            ]
+          },
+          'wertung-gewichtung': {
+            guidingQuestions: [
+              'Was spricht für diese Entscheidung, was dagegen — und wie gewichten Sie das?',
+              'Wie gehen Sie mit Aspekten um, bei denen Sie sich noch nicht sicher sind?'
+            ]
+          },
+          'wertung-affekt': {
+            guidingQuestions: [
+              'Wie fühlt sich die Entscheidung für Sie an?',
+              'Welche Gefühle löst die Vorstellung der verschiedenen Möglichkeiten in Ihnen aus?'
+            ]
+          },
+          'willens-entscheidung': {
+            guidingQuestions: [
+              'Wie würden Sie Ihre Entscheidung in Worte fassen?',
+              'Hat sich Ihre Einschätzung in den letzten Wochen oder Monaten verändert?'
+            ]
+          },
+          'willens-begruendung': {
+            guidingQuestions: [
+              'Können Sie beschreiben, weshalb Sie sich für diesen Weg entschieden haben?'
+            ]
+          },
+          'willens-innen': {
+            label: 'Umgang mit inneren Spannungen',
+            definition: 'Die Person kann mit inneren Spannungen, Ängsten oder Unsicherheiten so umgehen, dass sie ihre Entscheidung reflektiert und über die Zeit weiterverfolgen kann.',
+            guidingQuestions: [
+              'Gibt es innere Spannungen oder Ängste, die Ihnen die Umsetzung erschweren — und wie gehen Sie damit um?'
+            ]
+          },
+          'willens-aussen': {
+            label: 'Auseinandersetzung mit äusseren Einflüssen',
+            definition: 'Die Person kann ihren Willen auch bei abweichenden Meinungen oder Erwartungen anderer reflektiert aufrechterhalten und umsetzen.',
+            guidingQuestions: [
+              'Erleben Sie Erwartungen oder Druck aus Ihrem Umfeld oder der Community?',
+              'Wie setzen Sie sich mit abweichenden Meinungen anderer auseinander, ohne diese unreflektiert zu übernehmen?'
+            ]
+          }
+        },
+        extraAreas: [
+          {
+            id: 'gi-zukunft',
+            label: 'Zukunftsperspektive und Konsequenzverständnis',
+            focus: 'Geschlechtsinkongruenz — Langzeitperspektive',
+            definition: 'Fähigkeit, die Entscheidung im Kontext langfristiger, auch irreversibler Auswirkungen — einschliesslich der Auswirkungen auf die Reproduktion — einzuordnen.',
+            areaNote: 'Dieser Bereich ist GI-spezifisch und ergänzt den U-Doc-Kern.',
+            criteria: [
+              {
+                id: 'gi-zukunft-konsequenzen',
+                label: 'Verständnis langfristiger Konsequenzen',
+                definition: 'Die Person kann die dauerhaften und potenziell irreversiblen Auswirkungen der Massnahme benennen, einschliesslich der Reproduktionsdimension.',
+                guidingQuestions: [
+                  'Welche Auswirkungen der Massnahme sind dauerhaft oder nicht umkehrbar?',
+                  'Haben Sie sich mit den Auswirkungen auf Ihre Fruchtbarkeit und Familienplanung auseinandergesetzt?',
+                  'Wie stehen Sie heute zu diesen langfristigen Veränderungen?'
+                ],
+                criterionNote: 'Vgl. WPATH SOC-8, Statement 5.3.g: Verständnis der reproduktiven Auswirkungen als eigenständiges Kriterium.'
+              },
+              {
+                id: 'gi-zukunft-identitaet',
+                label: 'Zukunftsbezogene Identitätsvorstellung',
+                definition: 'Die Person kann sich vorstellen, wie sich die Massnahme auf ihr zukünftiges Selbstverständnis auswirkt, und kann diese Vorstellung mit ihrer aktuellen Identität in Verbindung bringen.',
+                guidingQuestions: [
+                  'Wie stellen Sie sich Ihr Leben nach der Massnahme vor?',
+                  'Was erhoffen Sie sich von der Veränderung — und was macht Ihnen dabei Sorgen?'
+                ],
+                criterionNote: null
+              }
+            ],
+            summaryScale: [
+              { id: 'unauffaellig',     label: 'unauffällig' },
+              { id: 'leicht',           label: 'leicht beeinträchtigt' },
+              { id: 'mittelgradig',     label: 'mittelgradig beeinträchtigt' },
+              { id: 'schwer',           label: 'schwer beeinträchtigt' },
+              { id: 'nichtbeurteilbar', label: 'nicht beurteilbar' }
+            ]
+          },
+          {
+            id: 'gi-ambivalenz',
+            label: 'Umgang mit Ambivalenz und sozialem Kontext',
+            focus: 'Geschlechtsinkongruenz — Ambivalenz und Umfeld',
+            definition: 'Fähigkeit, eigene Zweifel und Ambivalenz zu reflektieren sowie mit Einflüssen aus dem sozialen Umfeld und der Community umzugehen, ohne die eigene Entscheidungsfähigkeit zu verlieren.',
+            areaNote: 'Dieser Bereich ist GI-spezifisch. Ambivalenz ist kein Ausschlusskriterium für Urteilsfähigkeit.',
+            criteria: [
+              {
+                id: 'gi-ambivalenz-zweifel',
+                label: 'Reflektierter Umgang mit eigenen Zweifeln',
+                definition: 'Die Person kann Zweifel und Unsicherheiten benennen und sich ihnen gegenüber reflektiert verhalten, ohne davon in ihrer Entscheidungsfähigkeit wesentlich beeinträchtigt zu werden.',
+                guidingQuestions: [
+                  'Haben Sie Zweifel an Ihrer Entscheidung — und wie gehen Sie damit um?',
+                  'Unterscheiden Sie zwischen Zweifeln, die Sie weiterentwickeln, und solchen, die Sie blockieren?'
+                ],
+                criterionNote: 'Ambivalenz und Zweifel sind normale Bestandteile komplexer Entscheidungsprozesse.'
+              },
+              {
+                id: 'gi-ambivalenz-umfeld',
+                label: 'Auseinandersetzung mit sozialem Umfeld und Community',
+                definition: 'Die Person kann Erwartungen und Einflüsse aus ihrem sozialen Umfeld und der Community von ihrer eigenen Entscheidungsgrundlage unterscheiden.',
+                guidingQuestions: [
+                  'Wie beeinflussen Erwartungen aus Ihrem Umfeld oder der Community Ihre Entscheidung?',
+                  'Können Sie klar benennen, was Sie selbst wollen — unabhängig von dem, was andere erwarten?'
+                ],
+                criterionNote: null
+              }
+            ],
+            summaryScale: [
+              { id: 'unauffaellig',     label: 'unauffällig' },
+              { id: 'leicht',           label: 'leicht beeinträchtigt' },
+              { id: 'mittelgradig',     label: 'mittelgradig beeinträchtigt' },
+              { id: 'schwer',           label: 'schwer beeinträchtigt' },
+              { id: 'nichtbeurteilbar', label: 'nicht beurteilbar' }
+            ]
+          }
+        ],
+        extraTextBlocks: {
+          'gi-zukunft-konsequenzen': {
+            'unauffaellig':     'Die Person kann die langfristigen und irreversiblen Konsequenzen der Massnahme — einschliesslich der Auswirkungen auf die Reproduktion — benennen und in ihre Entscheidung einbeziehen.',
+            'beeintraechtigt':  'Das Verständnis der langfristigen Konsequenzen ist eingeschränkt; wesentliche Aspekte, insbesondere zur Reproduktionsdimension, werden nicht vollständig erfasst.',
+            'nichtbeurteilbar': 'Das Verständnis der langfristigen Konsequenzen konnte in dieser Sitzung nicht beurteilt werden.'
+          },
+          'gi-zukunft-identitaet': {
+            'unauffaellig':     'Die Person kann sich eine kohärente Vorstellung ihres zukünftigen Lebens nach der Massnahme bilden und diese mit ihrer aktuellen Identität in Verbindung bringen.',
+            'beeintraechtigt':  'Die Vorstellung des zukünftigen Selbst nach der Massnahme ist unscharf oder inkohärent.',
+            'nichtbeurteilbar': 'Die zukunftsbezogene Identitätsvorstellung konnte in dieser Sitzung nicht beurteilt werden.'
+          },
+          'gi-ambivalenz-zweifel': {
+            'unauffaellig':     'Die Person kann eigene Zweifel benennen und sich ihnen reflektiert gegenüberstellen, ohne in ihrer Entscheidungsfähigkeit wesentlich beeinträchtigt zu werden.',
+            'beeintraechtigt':  'Eigene Zweifel werden nur teilweise wahrgenommen oder führen zu einer erheblichen Einschränkung des Entscheidungsprozesses.',
+            'nichtbeurteilbar': 'Der Umgang mit eigenen Zweifeln konnte in dieser Sitzung nicht beurteilt werden.'
+          },
+          'gi-ambivalenz-umfeld': {
+            'unauffaellig':     'Die Person kann Erwartungen und Einflüsse aus ihrem sozialen Umfeld von ihrer eigenen Entscheidungsgrundlage klar unterscheiden.',
+            'beeintraechtigt':  'Die Abgrenzung zwischen eigener Entscheidung und äusseren Erwartungen gelingt nur teilweise.',
+            'nichtbeurteilbar': 'Die Auseinandersetzung mit sozialem Kontext konnte in dieser Sitzung nicht beurteilt werden.'
+          },
+          '_area:gi-zukunft': {
+            'unauffaellig':     'Die Zukunftsperspektive und das Konsequenzverständnis sind hinsichtlich der vorliegenden Entscheidung unauffällig.',
+            'leicht':           'Die Zukunftsperspektive und das Konsequenzverständnis sind hinsichtlich der vorliegenden Entscheidung leicht beeinträchtigt.',
+            'mittelgradig':     'Die Zukunftsperspektive und das Konsequenzverständnis sind hinsichtlich der vorliegenden Entscheidung mittelgradig beeinträchtigt.',
+            'schwer':           'Die Zukunftsperspektive und das Konsequenzverständnis sind hinsichtlich der vorliegenden Entscheidung schwer beeinträchtigt.',
+            'nichtbeurteilbar': 'Die Zukunftsperspektive und das Konsequenzverständnis konnten hinsichtlich der vorliegenden Entscheidung nicht beurteilt werden.'
+          },
+          '_area:gi-ambivalenz': {
+            'unauffaellig':     'Der Umgang mit Ambivalenz und sozialem Kontext ist hinsichtlich der vorliegenden Entscheidung unauffällig.',
+            'leicht':           'Der Umgang mit Ambivalenz und sozialem Kontext ist hinsichtlich der vorliegenden Entscheidung leicht beeinträchtigt.',
+            'mittelgradig':     'Der Umgang mit Ambivalenz und sozialem Kontext ist hinsichtlich der vorliegenden Entscheidung mittelgradig beeinträchtigt.',
+            'schwer':           'Der Umgang mit Ambivalenz und sozialem Kontext ist hinsichtlich der vorliegenden Entscheidung schwer beeinträchtigt.',
+            'nichtbeurteilbar': 'Der Umgang mit Ambivalenz und sozialem Kontext konnte hinsichtlich der vorliegenden Entscheidung nicht beurteilt werden.'
+          }
+        }
+      }
+    };
 
     /* ============================================================
        C. TEXT-BLÖCKE
@@ -1120,6 +1486,41 @@
         'mittelgradig':     'Die Willensbildung und -umsetzung ist hinsichtlich der vorliegenden Entscheidung mittelgradig beeinträchtigt.',
         'schwer':           'Die Willensbildung und -umsetzung ist hinsichtlich der vorliegenden Entscheidung schwer beeinträchtigt.',
         'nichtbeurteilbar': 'Die Willensbildung und -umsetzung konnte hinsichtlich der vorliegenden Entscheidung nicht beurteilt werden.'
+      },
+      // GI-Modul — Zusatzbereiche
+      'gi-zukunft-konsequenzen': {
+        'unauffaellig':     'Die Person kann die langfristigen und irreversiblen Konsequenzen der Massnahme — einschliesslich der Auswirkungen auf die Reproduktion — benennen und in ihre Entscheidung einbeziehen.',
+        'beeintraechtigt':  'Das Verständnis der langfristigen Konsequenzen ist eingeschränkt; wesentliche Aspekte, insbesondere zur Reproduktionsdimension, werden nicht vollständig erfasst.',
+        'nichtbeurteilbar': 'Das Verständnis der langfristigen Konsequenzen konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'gi-zukunft-identitaet': {
+        'unauffaellig':     'Die Person kann sich eine kohärente Vorstellung ihres zukünftigen Lebens nach der Massnahme bilden und diese mit ihrer aktuellen Identität in Verbindung bringen.',
+        'beeintraechtigt':  'Die Vorstellung des zukünftigen Selbst nach der Massnahme ist unscharf oder inkohärent.',
+        'nichtbeurteilbar': 'Die zukunftsbezogene Identitätsvorstellung konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'gi-ambivalenz-zweifel': {
+        'unauffaellig':     'Die Person kann eigene Zweifel benennen und sich ihnen reflektiert gegenüberstellen, ohne in ihrer Entscheidungsfähigkeit wesentlich beeinträchtigt zu werden.',
+        'beeintraechtigt':  'Eigene Zweifel werden nur teilweise wahrgenommen oder führen zu einer erheblichen Einschränkung des Entscheidungsprozesses.',
+        'nichtbeurteilbar': 'Der Umgang mit eigenen Zweifeln konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      'gi-ambivalenz-umfeld': {
+        'unauffaellig':     'Die Person kann Erwartungen und Einflüsse aus ihrem sozialen Umfeld von ihrer eigenen Entscheidungsgrundlage klar unterscheiden.',
+        'beeintraechtigt':  'Die Abgrenzung zwischen eigener Entscheidung und äusseren Erwartungen gelingt nur teilweise.',
+        'nichtbeurteilbar': 'Die Auseinandersetzung mit sozialem Kontext konnte in dieser Sitzung nicht beurteilt werden.'
+      },
+      '_area:gi-zukunft': {
+        'unauffaellig':     'Die Zukunftsperspektive und das Konsequenzverständnis sind hinsichtlich der vorliegenden Entscheidung unauffällig.',
+        'leicht':           'Die Zukunftsperspektive und das Konsequenzverständnis sind hinsichtlich der vorliegenden Entscheidung leicht beeinträchtigt.',
+        'mittelgradig':     'Die Zukunftsperspektive und das Konsequenzverständnis sind hinsichtlich der vorliegenden Entscheidung mittelgradig beeinträchtigt.',
+        'schwer':           'Die Zukunftsperspektive und das Konsequenzverständnis sind hinsichtlich der vorliegenden Entscheidung schwer beeinträchtigt.',
+        'nichtbeurteilbar': 'Die Zukunftsperspektive und das Konsequenzverständnis konnten hinsichtlich der vorliegenden Entscheidung nicht beurteilt werden.'
+      },
+      '_area:gi-ambivalenz': {
+        'unauffaellig':     'Der Umgang mit Ambivalenz und sozialem Kontext ist hinsichtlich der vorliegenden Entscheidung unauffällig.',
+        'leicht':           'Der Umgang mit Ambivalenz und sozialem Kontext ist hinsichtlich der vorliegenden Entscheidung leicht beeinträchtigt.',
+        'mittelgradig':     'Der Umgang mit Ambivalenz und sozialem Kontext ist hinsichtlich der vorliegenden Entscheidung mittelgradig beeinträchtigt.',
+        'schwer':           'Der Umgang mit Ambivalenz und sozialem Kontext ist hinsichtlich der vorliegenden Entscheidung schwer beeinträchtigt.',
+        'nichtbeurteilbar': 'Der Umgang mit Ambivalenz und sozialem Kontext konnte hinsichtlich der vorliegenden Entscheidung nicht beurteilt werden.'
       }
     };
 
@@ -1149,6 +1550,9 @@
     /* Flacher Ablaufplan (wird von buildFlatSchedule befüllt) */
     let schedule = [];
 
+    /* Zähler für bisherige Sitzungs-IDs (kollisionssicher) */
+    let priorSessionIdCounter = 0;
+
     /* ============================================================
        E. LOGIK
        ============================================================ */
@@ -1173,23 +1577,27 @@
           referenceDecision:  '',   // Bezugsentscheidung / Ausgangslage
           // Verlauf
           isFirstAssessment:  true,
-          priorSessions:      []
+          priorSessions:      [],
+          // Aktive Erweiterungsmodule
+          activeModules:      []
         },
         // Navigationsstand
         nav: {
           view:      'start',  // 'start' | 'criterion' | 'assessment' | 'summary'
           flatIndex: 0
         },
-        // Kriteriumsantworten: criterionId -> optionId | null
+        // UI-Zustand
+        ui: {
+          mandatoryWarning: false
+        },
+        // Kriteriumsantworten: criterionId -> { option, relevant, begruendung }
         criterionAnswers: {},
         // Bereichszusammenfassungen: areaId -> { summaryId, description }
         areaSummaries: {},
-        // SAMW-Beurteilungsalgorithmus
+        // Klinische Einschätzung (zwei Fragen)
         samwAlgorithm: {
-          step1: null,            // null | 'ja' | 'nein'
-          step2: null,
-          step3: null,
-          suggestedVerdict: null
+          step2: null,   // null | 'ja' | 'nein'
+          step3: null    // null | 'ja' | 'nein'
         },
         // Abschluss
         conclusion: {
@@ -1207,21 +1615,37 @@
         }
       };
 
-      // Antworten vorinitialisieren
+      // Antworten vorinitialisieren — Kern
       udocCore.areas.forEach(area => {
         area.criteria.forEach(c => {
-          state.criterionAnswers[c.id] = null;
+          state.criterionAnswers[c.id] = { option: null, relevant: null, begruendung: '' };
         });
         state.areaSummaries[area.id] = { summaryId: null, description: '' };
       });
 
-      // Ablaufplan erstellen
+      // Antworten vorinitialisieren — aktive Module
+      for (const modId of state.meta.activeModules) {
+        const mod = extensionModules[modId];
+        if (!mod || !mod.extraAreas) continue;
+        mod.extraAreas.forEach(area => {
+          area.criteria.forEach(c => {
+            if (!state.criterionAnswers[c.id])
+              state.criterionAnswers[c.id] = { option: null, relevant: null, begruendung: '' };
+          });
+          if (!state.areaSummaries[area.id])
+            state.areaSummaries[area.id] = { summaryId: null, description: '' };
+        });
+      }
+
+      // Zähler und Ablaufplan zurücksetzen
+      priorSessionIdCounter = 0;
       schedule = buildFlatSchedule();
     }
 
     /* Flachen Ablaufplan erstellen */
     function buildFlatSchedule() {
       const items = [];
+      // Kern-Bereiche
       udocCore.areas.forEach(area => {
         area.criteria.forEach(criterion => {
           items.push({
@@ -1238,6 +1662,24 @@
           areaLabel: area.label
         });
       });
+      // Modul-Bereiche anhängen
+      for (const modId of (state.meta.activeModules || [])) {
+        const mod = extensionModules[modId];
+        if (!mod || !mod.extraAreas) continue;
+        mod.extraAreas.forEach(area => {
+          area.criteria.forEach(criterion => {
+            items.push({
+              type:           'criterion',
+              areaId:         area.id,
+              criterionId:    criterion.id,
+              areaLabel:      area.label,
+              criterionLabel: criterion.label,
+              moduleId:       modId
+            });
+          });
+          items.push({ type: 'areaSummary', areaId: area.id, areaLabel: area.label, moduleId: modId });
+        });
+      }
       return items;
     }
 
@@ -1248,15 +1690,178 @@
 
     /* Kriteriumsoption auswählen */
     function selectCriterionOption(criterionId, optionId) {
-      state.criterionAnswers[criterionId] = optionId;
+      state.criterionAnswers[criterionId].option = optionId;
+      if (optionId !== 'beeintraechtigt') {
+        state.criterionAnswers[criterionId].relevant = null;
+      }
       updateFullLiveText({ silent: false });
+      renderLiveTextPanel();
       renderMainContent();
+    }
+
+    /* Relevanz einer Beeinträchtigung setzen */
+    function setCriterionRelevant(criterionId, value) {
+      state.criterionAnswers[criterionId].relevant = value;
+      renderLiveTextPanel();
+      renderMainContent();
+    }
+
+    /* Begründung eines Kriteriums setzen (kein Rerender) */
+    function setCriterionBegruendung(criterionId, text) {
+      state.criterionAnswers[criterionId].begruendung = text;
+    }
+
+    /* Prüft ob Pflichtfelder (Begründung + Relevanz) fehlen */
+    function hasMissingMandatoryField() {
+      return Object.values(state.criterionAnswers).some(ans => {
+        if ((ans.option === 'beeintraechtigt' || ans.option === 'nichtbeurteilbar')
+            && !ans.begruendung.trim()) return true;
+        if (ans.option === 'beeintraechtigt' && ans.relevant === null) return true;
+        return false;
+      });
+    }
+
+    /* Liefert eine Liste von Klartext-Blockern, die das Generieren
+       des Endbefunds verhindern. Leere Liste = bereit. */
+    function getEndbefundBlockers() {
+      const blockers = [];
+
+      // 1) Pflichtfelder auf Kriteriumsebene
+      if (hasMissingMandatoryField()) {
+        blockers.push('Bei einzelnen Kriterien fehlen Begründungen oder die Relevanz-Angabe.');
+      }
+
+      // 2) Bereichszusammenfassungen — alle Kern- und Modul-Bereiche
+      const allAreas = [...udocCore.areas];
+      for (const modId of (state.meta.activeModules || [])) {
+        const mod = extensionModules[modId];
+        if (mod && mod.extraAreas) allAreas.push(...mod.extraAreas);
+      }
+      const missingSummaries = allAreas.filter(a => {
+        const s = state.areaSummaries[a.id];
+        return !s || !s.summaryId;
+      });
+      if (missingSummaries.length > 0) {
+        blockers.push(
+          'Bereichszusammenfassung fehlt für: ' +
+          missingSummaries.map(a => a.label).join(', ') + '.'
+        );
+      }
+
+      // 3) Gesamturteil
+      if (!state.conclusion.verdict) {
+        blockers.push('Das Gesamturteil ist noch nicht gewählt.');
+      }
+
+      // 4) Bei Urteilsunfähigkeit: Rechtsgrund Pflicht
+      if (state.conclusion.verdict === 'urteilsunfaehig' && !state.conclusion.legalGround) {
+        blockers.push('Bei Urteilsunfähigkeit ist die Ursache (Rechtsgrund) anzugeben.');
+      }
+
+      return blockers;
+    }
+
+    /* Kriteriumsdefinition mit aktiven Modul-Overrides zurückgeben */
+    function getEffectiveCriterionDef(criterionId) {
+      let def = null;
+      // Kern-Kriterien suchen
+      for (const area of udocCore.areas) {
+        const c = area.criteria.find(c => c.id === criterionId);
+        if (c) { def = { ...c }; break; }
+      }
+      // Modul-spezifische Kriterien suchen
+      if (!def) {
+        for (const modId of (state.meta.activeModules || [])) {
+          const mod = extensionModules[modId];
+          if (!mod || !mod.extraAreas) continue;
+          for (const area of mod.extraAreas) {
+            const c = area.criteria.find(c => c.id === criterionId);
+            if (c) { def = { ...c }; break; }
+          }
+          if (def) break;
+        }
+      }
+      if (!def) return null;
+      // coreOverrides anwenden
+      for (const modId of (state.meta.activeModules || [])) {
+        const mod = extensionModules[modId];
+        if (!mod || !mod.coreOverrides || !mod.coreOverrides[criterionId]) continue;
+        const ov = mod.coreOverrides[criterionId];
+        if (ov.label)            def = { ...def, label: ov.label };
+        if (ov.definition)       def = { ...def, definition: ov.definition };
+        if (ov.guidingQuestions) def = { ...def, guidingQuestions: ov.guidingQuestions };
+      }
+      return def;
+    }
+
+    /* Erweiterungsmodul aktivieren oder deaktivieren */
+    function toggleModule(moduleId) {
+      const idx = state.meta.activeModules.indexOf(moduleId);
+      if (idx === -1) {
+        state.meta.activeModules.push(moduleId);
+        const mod = extensionModules[moduleId];
+        if (mod && mod.extraAreas) {
+          mod.extraAreas.forEach(area => {
+            area.criteria.forEach(c => {
+              state.criterionAnswers[c.id] = { option: null, relevant: null, begruendung: '' };
+            });
+            state.areaSummaries[area.id] = { summaryId: null, description: '' };
+          });
+        }
+      } else {
+        state.meta.activeModules.splice(idx, 1);
+        const mod = extensionModules[moduleId];
+        if (mod && mod.extraAreas) {
+          mod.extraAreas.forEach(area => {
+            area.criteria.forEach(c => delete state.criterionAnswers[c.id]);
+            delete state.areaSummaries[area.id];
+          });
+        }
+      }
+      schedule = buildFlatSchedule();
+      renderMainContent();
+      updateHeaderMeta();
+    }
+
+    /* Pflichtfeld-Check: einblenden falls fehlend, ausblenden falls ok */
+    function checkAndWarnMandatory() {
+      if (hasMissingMandatoryField()) {
+        state.ui.mandatoryWarning = true;
+        const w = document.getElementById('live-mandatory-warning');
+        if (w) w.style.display = 'block';
+        if (state.nav.view === 'summary') renderMainContent();
+        return true;
+      }
+      // Alle Pflichtfelder ok → eventuell vorhandene Warnung ausblenden
+      if (state.ui.mandatoryWarning) clearMandatoryWarning();
+      return false;
+    }
+
+    /* Alle Warnhinweise ausblenden */
+    function clearMandatoryWarning() {
+      state.ui.mandatoryWarning = false;
+      const w = document.getElementById('live-mandatory-warning');
+      if (w) w.style.display = 'none';
+      const ws = document.getElementById('mandatory-warning');
+      if (ws) ws.style.display = 'none';
+    }
+
+    /* Warnung im Live-Panel anzeigen, wenn Endbefund noch nicht
+       generierbar ist. Nutzt das vorhandene #live-mandatory-warning-Element. */
+    function showEndbefundBlockerWarning(blockers) {
+      const el = document.getElementById('live-mandatory-warning');
+      if (!el) return;
+      el.style.display = 'block';
+      el.innerHTML = '<strong>Endbefund noch nicht generierbar:</strong><ul style="margin:4px 0 0;padding-left:1.2em">' +
+        blockers.map(b => '<li>' + esc(b) + '</li>').join('') +
+        '</ul>';
     }
 
     /* Bereichszusammenfassung setzen */
     function setAreaSummary(areaId, summaryId) {
       state.areaSummaries[areaId].summaryId = summaryId;
       updateFullLiveText({ silent: false });
+      renderLiveTextPanel();
       renderMainContent();
     }
 
@@ -1269,7 +1874,7 @@
     /* Bisherige Sitzung hinzufügen */
     function addPriorSession() {
       state.meta.priorSessions.push({
-        id:       Date.now(),
+        id:       ++priorSessionIdCounter,
         date:     '',
         examiner: '',
         result:   ''
@@ -1296,23 +1901,11 @@
       renderLiveTextPanel();
     }
 
-    /* Beurteilung */
+    /* Klinische Einschätzung — Schritt setzen */
     function setSamwStep(step, value) {
       state.samwAlgorithm['step' + step] = value;
-      // Nachfolgende Schritte zurücksetzen
-      if (step === 1) { state.samwAlgorithm.step2 = null; state.samwAlgorithm.step3 = null; }
-      if (step === 2) { state.samwAlgorithm.step3 = null; }
-      // Vorurteil berechnen
-      const s = state.samwAlgorithm;
-      let suggested = null;
-      if      (s.step1 === 'nein')  suggested = 'urteilsfaehig';   // Beeinträchtigungen für Entscheidung nicht relevant
-      else if (s.step1 === 'keine') suggested = 'urteilsfaehig';   // Keine Beeinträchtigungen festgestellt
-      else if (s.step1 === 'ja' && s.step2 === 'nein') suggested = 'urteilsfaehig';
-      else if (s.step1 === 'ja' && s.step2 === 'ja' && s.step3 === 'ja')  suggested = 'urteilsfaehig';
-      else if (s.step1 === 'ja' && s.step2 === 'ja' && s.step3 === 'nein') suggested = 'urteilsunfaehig';
-      state.samwAlgorithm.suggestedVerdict = suggested;
-      // Gesamturteil vorbelegen, sofern noch nicht manuell gesetzt
-      if (suggested && !state.conclusion.verdict) state.conclusion.verdict = suggested;
+      // Schritt 3 zurücksetzen wenn Schritt 2 geändert
+      if (step === 2) state.samwAlgorithm.step3 = null;
       renderMainContent();
     }
 
@@ -1322,15 +1915,34 @@
         if (!validateStartForm()) return;
         state.nav.view = 'criterion';
         state.nav.flatIndex = 0;
+
       } else if (state.nav.view === 'criterion') {
+        const item = getEffectiveCriterion();
+
+        // Hard Block: Begründung bei beeintraechtigt und nichtbeurteilbar erforderlich
+        if (item && item.type === 'criterion') {
+          const ans = state.criterionAnswers[item.criterionId];
+          const needsBegruendung = ans && (ans.option === 'beeintraechtigt' || ans.option === 'nichtbeurteilbar');
+          if (needsBegruendung && !ans.begruendung.trim()) {
+            const errEl = document.getElementById('begruendung-field-error');
+            if (errEl) { errEl.style.display = 'block'; errEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+            return;
+          }
+        }
+
         if (state.nav.flatIndex < schedule.length - 1) {
           state.nav.flatIndex++;
         } else {
-          state.nav.view = 'assessment';
+          // Letzter Schritt: Assessment nur wenn Beeinträchtigungen vorhanden
+          const hasBeeintraechtigt = Object.values(state.criterionAnswers)
+            .some(a => a.option === 'beeintraechtigt');
+          state.nav.view = hasBeeintraechtigt ? 'assessment' : 'summary';
         }
+
       } else if (state.nav.view === 'assessment') {
         state.nav.view = 'summary';
       }
+
       renderMainContent();
       updateHeaderMeta();
     }
@@ -1347,7 +1959,14 @@
         state.nav.view = 'criterion';
         state.nav.flatIndex = schedule.length - 1;
       } else if (state.nav.view === 'summary') {
-        state.nav.view = 'assessment';
+        const hasBeeintraechtigt = Object.values(state.criterionAnswers)
+          .some(a => a.option === 'beeintraechtigt');
+        if (hasBeeintraechtigt) {
+          state.nav.view = 'assessment';
+        } else {
+          state.nav.view = 'criterion';
+          state.nav.flatIndex = schedule.length - 1;
+        }
       }
       renderMainContent();
       updateHeaderMeta();
@@ -1358,6 +1977,39 @@
       state.nav.view = view;
       if (index !== undefined) state.nav.flatIndex = index;
       renderMainContent();
+    }
+
+    /* Direkt zu einem Schritt im Ablaufplan springen */
+    function goToFlatIndex(idx) {
+      if (idx >= 0 && idx < schedule.length) {
+        state.nav.view = 'criterion';
+        state.nav.flatIndex = idx;
+        renderMainContent();
+      }
+    }
+
+    /* Breadcrumb mit klickbaren Geschwistern innerhalb des Bereichs */
+    function renderBreadcrumb(item) {
+      const siblings = schedule.filter(s => s.areaId === item.areaId);
+      const currentIdx = state.nav.flatIndex;
+      const parts = siblings.map(sib => {
+        const sibIdx = schedule.indexOf(sib);
+        const isActive = sibIdx === currentIdx;
+        const label = sib.type === 'areaSummary'
+          ? 'Bereichszusammenfassung'
+          : (getEffectiveCriterionDef(sib.criterionId)?.label || sib.criterionLabel);
+        if (isActive) {
+          return `<span class="breadcrumb-active">${esc(label)}</span>`;
+        }
+        return `<a href="#" class="breadcrumb-link"
+                  onclick="event.preventDefault();goToFlatIndex(${sibIdx})">${esc(label)}</a>`;
+      });
+      return `
+        <div class="breadcrumb">
+          <span>${esc(item.areaLabel)}</span>
+          <span class="breadcrumb-sep">›</span>
+          ${parts.join('<span class="breadcrumb-sep">›</span>')}
+        </div>`;
     }
 
     /* Startformular validieren — liest alle Felder in state.meta */
@@ -1388,20 +2040,19 @@
         if (exErr) exErr.textContent = '';
       }
 
-      // Pflichtfeld: Patientenidentifikation (Name oder Kürzel)
-      const hasPatient = state.meta.patientLastName.trim() || state.meta.patientRef.trim();
-      const refEl  = document.getElementById('start-patientRef');
-      const refErr = document.getElementById('err-patientRef');
+      // Pflichtfeld: Nachname ODER Kürzel/Fallnummer
       const lnEl   = document.getElementById('start-patientLastName');
-      if (!hasPatient) {
-        if (refEl)  refEl.classList.add('error');
-        if (refErr) refErr.textContent = 'Nachname oder Kürzel / Fallnummer ist erforderlich.';
-        if (lnEl)   lnEl.classList.add('error');
+      const refEl  = document.getElementById('start-patientRef');
+      const idErr  = document.getElementById('err-patientIdentification');
+      if (!state.meta.patientLastName.trim() && !state.meta.patientRef.trim()) {
+        if (lnEl)  lnEl.classList.add('error');
+        if (refEl) refEl.classList.add('error');
+        if (idErr) idErr.textContent = 'Mindestens eines dieser Felder muss ausgefüllt sein.';
         valid = false;
       } else {
-        if (refEl)  refEl.classList.remove('error');
-        if (refErr) refErr.textContent = '';
-        if (lnEl)   lnEl.classList.remove('error');
+        if (lnEl)  lnEl.classList.remove('error');
+        if (refEl) refEl.classList.remove('error');
+        if (idErr) idErr.textContent = '';
       }
 
       // Pflichtfeld: Ausgangslage
@@ -1433,10 +2084,10 @@
       let header = 'EVALUATION DER URTEILSFÄHIGKEIT (U-Doc)\n';
       header += '─'.repeat(48) + '\n';
       header += 'Beurteilende Person(en): ' + (m.examiners || '—') + '\n';
-      header += 'Datum der Beurteilung:   ' + (m.assessmentDate || '—') + '\n';
+      header += 'Datum der Beurteilung:   ' + (m.assessmentDate ? formatDateDE(m.assessmentDate) : '—') + '\n';
       header += 'Ort:                     ' + (m.assessmentLocation || '—') + '\n';
       header += 'Patient/in:              ' + patientDisplay;
-      if (m.patientDOB) header += '  (geb. ' + m.patientDOB + ')';
+      if (m.patientDOB) header += '  (geb. ' + formatDateDE(m.patientDOB) + ')';
       header += '\n';
       if (m.patientRef && patientName) header += 'Kürzel/Fallnummer:       ' + m.patientRef + '\n';
       header += '\n';
@@ -1448,12 +2099,24 @@
 
       // Körper — ein Absatz pro Bereich (Einzelkriteriumssätze zusammengefasst + Bereichszusammenfassung)
       const bodyParts = [];
-      udocCore.areas.forEach(area => {
+      const allAreas = [...udocCore.areas];
+      for (const modId of (state.meta.activeModules || [])) {
+        const mod = extensionModules[modId];
+        if (mod && mod.extraAreas) allAreas.push(...mod.extraAreas);
+      }
+      allAreas.forEach(area => {
         const sentences = [];
         area.criteria.forEach(criterion => {
-          const optId = state.criterionAnswers[criterion.id];
+          const ans = state.criterionAnswers[criterion.id];
+          const optId = ans ? ans.option : null;
           if (optId && textBlocks[criterion.id] && textBlocks[criterion.id][optId]) {
-            sentences.push(textBlocks[criterion.id][optId]);
+            let sentence = textBlocks[criterion.id][optId];
+            if (optId === 'beeintraechtigt' && ans.relevant === true) {
+              sentence += ' Diese Beeinträchtigung ist für die vorliegende Entscheidung relevant.';
+            } else if (optId === 'beeintraechtigt' && ans.relevant === false) {
+              sentence += ' Diese Beeinträchtigung ist für die vorliegende Entscheidung nicht relevant.';
+            }
+            sentences.push(sentence);
           }
         });
         if (sentences.length === 0) return;
@@ -1471,7 +2134,7 @@
 
       // Konsolidierter Zusammenfassungsabsatz
       const summParts = [];
-      udocCore.areas.forEach(area => {
+      allAreas.forEach(area => {
         const summ = state.areaSummaries[area.id];
         const summId = summ ? summ.summaryId : null;
         if (!summId) return;
@@ -1542,6 +2205,12 @@
 
     /* Befundtext neu aus Eingaben generieren */
     function regenLiveText() {
+      const blockers = getEndbefundBlockers();
+      if (blockers.length > 0) {
+        showEndbefundBlockerWarning(blockers);
+        return;
+      }
+      clearMandatoryWarning();
       state.liveText.edited = false;
       const fresh = generateFullLiveText();
       state.liveText.text = fresh;
@@ -1557,47 +2226,55 @@
 
     /* Verteilung der Kriteriumsantworten eines Bereichs zählen */
     function countAreaDistribution(areaId) {
-      const area = udocCore.areas.find(a => a.id === areaId);
-      if (!area) return {};
+      // Kern- und Modul-Bereiche berücksichtigen
+      let criteria = [];
+      const coreArea = udocCore.areas.find(a => a.id === areaId);
+      if (coreArea) {
+        criteria = coreArea.criteria;
+      } else {
+        for (const modId of (state.meta.activeModules || [])) {
+          const mod = extensionModules[modId];
+          if (!mod || !mod.extraAreas) continue;
+          const mArea = mod.extraAreas.find(a => a.id === areaId);
+          if (mArea) { criteria = mArea.criteria; break; }
+        }
+      }
       const counts = { unauffaellig: 0, beeintraechtigt: 0, nichtbeurteilbar: 0, offen: 0 };
-      area.criteria.forEach(c => {
+      criteria.forEach(c => {
         const ans = state.criterionAnswers[c.id];
-        if (!ans) counts.offen++;
-        else counts[ans] = (counts[ans] || 0) + 1;
+        const opt = ans ? ans.option : null;
+        if (!opt) counts.offen++;
+        else counts[opt] = (counts[opt] || 0) + 1;
       });
       return counts;
     }
 
-    /* SVG-Donut-Diagramm rendern */
-    function renderAreaChart(areaId) {
-      const area = udocCore.areas.find(a => a.id === areaId);
-      const total = area ? area.criteria.length : 4;
-      const dist = countAreaDistribution(areaId);
-      const answered = total - (dist.offen || 0);
+    /* Interne Hilfsfunktion: SVG-Donut aus dist-Objekt + totalCriteria rendern */
+    function renderDonutSVG(dist, totalCriteria, opts) {
+      opts = opts || {};
+      const compact = opts.compact === true;
 
-      const cx = 60, cy = 60, R = 48, r = 28;
-      const segColors = {
-        unauffaellig:     '#028090',
-        beeintraechtigt:  '#E8A33D',
-        nichtbeurteilbar: '#6D5BA6',
-        offen:            '#CBD5E1'
-      };
-      const segLabels = {
-        unauffaellig:     'unauffällig',
-        beeintraechtigt:  'beeinträchtigt',
-        nichtbeurteilbar: 'nicht beurteilbar',
-        offen:            'offen'
-      };
+      const cx = compact ? 35 : 60;
+      const cy = compact ? 35 : 60;
+      const R  = compact ? 28 : 48;
+      const r  = compact ? 16 : 28;
+      const svgSize = compact ? 70 : 120;
 
-      // Segmente berechnen
+      const answered = totalCriteria - (dist.offen || 0);
+
+      const segData = [
+        { key: 'unauffaellig',    count: dist.unauffaellig    || 0, color: '#028090', label: 'unauffällig' },
+        { key: 'beeintraechtigt', count: dist.beeintraechtigt || 0, color: '#E8A33D', label: 'beeinträchtigt' },
+        { key: 'nichtbeurteilbar',count: dist.nichtbeurteilbar|| 0, color: '#6D5BA6', label: 'nicht beurteilbar' },
+        { key: 'offen',           count: dist.offen           || 0, color: '#CBD5E1', label: 'offen' }
+      ];
+
       const segments = [];
       let startAngle = -Math.PI / 2;
-      const keys = ['unauffaellig', 'beeintraechtigt', 'nichtbeurteilbar', 'offen'];
-      keys.forEach(key => {
-        const count = dist[key] || 0;
-        if (count === 0) return;
-        const angle = (count / total) * 2 * Math.PI;
-        segments.push({ key, count, startAngle, endAngle: startAngle + angle, color: segColors[key] });
+      segData.forEach(sd => {
+        if (sd.count === 0) return;
+        const angle = (sd.count / totalCriteria) * 2 * Math.PI;
+        segments.push({ ...sd, startAngle, endAngle: startAngle + angle });
         startAngle += angle;
       });
 
@@ -1607,10 +2284,8 @@
 
       let paths = '';
       if (segments.length === 0) {
-        // Leerer Ring
         paths = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#CBD5E1" stroke-width="${R - r}"/>`;
-      } else if (segments.length === 1 && segments[0].count === total) {
-        // Vollständiger Ring
+      } else if (segments.length === 1 && segments[0].count === totalCriteria) {
         paths = `<circle cx="${cx}" cy="${cy}" r="${(R + r) / 2}" fill="none" stroke="${segments[0].color}" stroke-width="${R - r}"/>`;
       } else {
         segments.forEach(seg => {
@@ -1630,25 +2305,76 @@
         });
       }
 
-      // Legende
-      const legendItems = keys
-        .filter(k => (dist[k] || 0) > 0)
-        .map(k => `
+      const labelFontSize = compact ? 9 : 14;
+      const subFontSize   = compact ? 7 : 10;
+      const svgEl = `<svg viewBox="0 0 ${svgSize} ${svgSize}" width="${svgSize}" height="${svgSize}" xmlns="http://www.w3.org/2000/svg">
+        ${paths}
+        <text x="${cx}" y="${cy - (compact ? 3 : 6)}" text-anchor="middle" font-size="${labelFontSize}" font-weight="bold" fill="#0D2B55">${answered}</text>
+        <text x="${cx}" y="${cy + (compact ? 8 : 10)}" text-anchor="middle" font-size="${subFontSize}" fill="#64748B">/ ${totalCriteria}</text>
+      </svg>`;
+
+      if (compact) {
+        return { svgEl, segments, svgOnly: `<div class="chart-container" style="margin:0">${svgEl}</div>` };
+      }
+      const legendItems = segments
+        .map(seg => `
           <div class="legend-item">
-            <div class="legend-dot" style="background:${segColors[k]}"></div>
-            <span>${segLabels[k]} (${dist[k]})</span>
+            <div class="legend-dot" style="background:${seg.color}"></div>
+            <span>${seg.label} (${seg.count})</span>
           </div>`)
         .join('');
+      return {
+        svgEl,
+        segments,
+        full: `<div class="chart-container">${svgEl}<div class="chart-legend">${legendItems}</div></div>`
+      };
+    }
 
-      return `
-        <div class="chart-container">
-          <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg">
-            ${paths}
-            <text x="${cx}" y="${cy - 6}" text-anchor="middle" font-size="14" font-weight="bold" fill="#0D2B55">${answered}</text>
-            <text x="${cx}" y="${cy + 10}" text-anchor="middle" font-size="10" fill="#64748B">von ${total}</text>
-          </svg>
-          <div class="chart-legend">${legendItems}</div>
-        </div>`;
+    /* SVG-Donut-Diagramm für einen Bereich rendern */
+    function renderAreaChart(areaId, opts) {
+      opts = opts || {};
+      const compact = opts.compact === true;
+
+      let totalCriteria = 4;
+      const coreArea = udocCore.areas.find(a => a.id === areaId);
+      if (coreArea) totalCriteria = coreArea.criteria.length;
+      else {
+        for (const modId of (state.meta.activeModules || [])) {
+          const mod = extensionModules[modId];
+          if (!mod || !mod.extraAreas) continue;
+          const mArea = mod.extraAreas.find(a => a.id === areaId);
+          if (mArea) { totalCriteria = mArea.criteria.length; break; }
+        }
+      }
+      const dist = countAreaDistribution(areaId);
+      const result = renderDonutSVG(dist, totalCriteria, opts);
+      return compact ? result.svgOnly : result.full;
+    }
+
+    /* Aggregierter Donut für ein Erweiterungsmodul (alle extraAreas) — nur Live-Panel */
+    function renderModuleChart(moduleId, opts) {
+      opts = opts || {};
+      const compact = opts.compact === true;
+      const mod = extensionModules[moduleId];
+      if (!mod || !mod.extraAreas) return '';
+
+      // Verteilung über alle Kriterien aller extraAreas aggregieren
+      const dist = { unauffaellig: 0, beeintraechtigt: 0, nichtbeurteilbar: 0, offen: 0 };
+      let totalCriteria = 0;
+      mod.extraAreas.forEach(area => {
+        area.criteria.forEach(c => {
+          totalCriteria++;
+          const ans = state.criterionAnswers[c.id];
+          const opt = ans ? ans.option : null;
+          if (opt === 'unauffaellig')     dist.unauffaellig++;
+          else if (opt === 'beeintraechtigt') dist.beeintraechtigt++;
+          else if (opt === 'nichtbeurteilbar') dist.nichtbeurteilbar++;
+          else dist.offen++;
+        });
+      });
+
+      const result = renderDonutSVG(dist, totalCriteria || 1, opts);
+      return compact ? result.svgOnly : result.full;
     }
 
     /* ============================================================
@@ -1692,12 +2418,12 @@
             </div>
             <div class="form-group" style="margin-bottom:0">
               <label>Beurteilende Person(en)</label>
-              <input type="text" value="${esc(s.examiner)}" placeholder="Name" oninput="updatePriorSession(${s.id},'examiner',this.value)">
+              <input type="text" lang="de-CH" value="${esc(s.examiner)}" placeholder="Name" oninput="updatePriorSession(${s.id},'examiner',this.value)">
             </div>
           </div>
           <div class="form-group" style="margin-top:8px;margin-bottom:0">
             <label>Ergebnis / Bemerkung</label>
-            <input type="text" value="${esc(s.result)}" placeholder="z. B. nicht beurteilbar" oninput="updatePriorSession(${s.id},'result',this.value)">
+            <input type="text" lang="de-CH" value="${esc(s.result)}" placeholder="z. B. nicht beurteilbar" oninput="updatePriorSession(${s.id},'result',this.value)">
           </div>
         </div>`).join('');
 
@@ -1710,9 +2436,9 @@
         <!-- Karte 1: Beurteilung -->
         <div class="card">
           <h3>Beurteilung</h3>
-          <div class="form-group" style="margin-top:var(--spacing-md)">
+          <div class="form-group required-field" style="margin-top:var(--spacing-md)">
             <label>Beurteilende Person(en) <span class="required-star">*</span></label>
-            <textarea id="start-examiners" rows="2"
+            <textarea id="start-examiners" rows="2" lang="de-CH"
               placeholder="Name(n) und Funktion der beurteilenden Person(en)"
               oninput="state.meta.examiners=this.value;updateFullLiveText({silent:true})"
             >${esc(m.examiners)}</textarea>
@@ -1737,9 +2463,12 @@
 
         <!-- Karte 2: Patientenetikett -->
         <div class="card">
-          <h3>Patientenetikett</h3>
+          <h3>Die Person im Rahmen der Evaluation</h3>
           <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:var(--spacing-md)">
-            Entspricht dem aufklebbaren Etikett des Papierformulars. Alle Felder optional — mindestens Nachname oder Kürzel/Fallnummer ist erforderlich.
+            Entspricht dem aufklebbaren Etikett des Papierformulars.
+          </p>
+          <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:var(--spacing-md)">
+            Mindestens eines der beiden folgenden Felder muss ausgefüllt sein.
           </p>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--spacing-md)">
             <div class="form-group" style="margin-bottom:0">
@@ -1765,17 +2494,17 @@
                 onchange="state.meta.patientDOB=this.value;updateFullLiveText({silent:true})">
             </div>
             <div class="form-group" style="margin-bottom:0">
-              <label>Kürzel / Fallnummer <span class="required-star">*</span></label>
+              <label>Kürzel / Fallnummer</label>
               <input type="text" id="start-patientRef"
                 value="${esc(m.patientRef)}"
                 placeholder="z. B. AB-2024-001"
                 oninput="state.meta.patientRef=this.value;updateHeaderMeta();updateFullLiveText({silent:true})">
-              <div class="field-error" id="err-patientRef"></div>
             </div>
           </div>
+          <div class="field-error" id="err-patientIdentification" style="margin-top:4px"></div>
           <div class="form-group" style="margin-top:var(--spacing-md);margin-bottom:0">
             <label>Anschrift <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
-            <textarea id="start-patientAddress" rows="2"
+            <textarea id="start-patientAddress" rows="2" lang="de-CH"
               placeholder="Strasse, PLZ Ort"
               oninput="state.meta.patientAddress=this.value"
             >${esc(m.patientAddress)}</textarea>
@@ -1783,12 +2512,12 @@
         </div>
 
         <!-- Karte 3: Ausgangslage -->
-        <div class="start-hero">
+        <div class="start-hero required-field">
           <div class="eyebrow">Ausgangslage</div>
           <p style="font-size:13px;color:var(--color-primary);line-height:1.55;margin-bottom:var(--spacing-md)">
             Anlass/Gründe für eine ausführliche Beurteilung der Urteilsfähigkeit (inkl. kurzer Beschreibung der Entscheidungssituation, der Entscheidungsoptionen, der Tragweite und bestehender Vorabklärungen):
           </p>
-          <textarea id="start-referenceDecision" rows="4"
+          <textarea id="start-referenceDecision" rows="4" lang="de-CH"
             placeholder="z. B. Einwilligung in die Behandlung mit Medikament X — Anlass: Ablehnung durch die betroffene Person trotz klarer medizinischer Empfehlung…"
             oninput="state.meta.referenceDecision=this.value;updateFullLiveText({silent:true})"
             style="background:#fff;font-size:14px"
@@ -1824,6 +2553,24 @@
             </div>` : ''}
         </div>
 
+        <!-- Karte 5: Erweiterungsmodule -->
+        <div class="card">
+          <h3>Erweiterungsmodule</h3>
+          <p style="font-size:12px;color:var(--color-text-muted);margin-bottom:var(--spacing-md)">
+            Optionale Module ergänzen den Kernbogen um bereichsspezifische Leitfragen und Terminologie.
+          </p>
+          ${Object.values(extensionModules).map(mod => {
+            const active = (state.meta.activeModules || []).includes(mod.id);
+            return '<div class="module-option' + (active ? ' active' : '') + '">'
+              + '<input type="checkbox" id="mod-' + esc(mod.id) + '" ' + (active ? 'checked' : '')
+              + ' onchange="toggleModule(\'' + esc(mod.id) + '\')">'
+              + '<div>'
+              + '<label for="mod-' + esc(mod.id) + '" style="font-weight:600;cursor:pointer">' + esc(mod.label) + '</label>'
+              + '<p style="font-size:12px;color:var(--color-text-muted);margin:2px 0 0">' + esc(mod.description) + '</p>'
+              + '</div></div>';
+          }).join('')}
+        </div>
+
         <div class="info-box" style="margin-top:var(--spacing-md)">
           <strong>Datenschutz:</strong> Alle Eingaben werden ausschliesslich im Arbeitsspeicher gehalten und beim Schliessen des Browserfensters unwiderruflich gelöscht. Es werden keine Daten gespeichert oder übertragen.
         </div>
@@ -1853,11 +2600,16 @@
 
     /* Einzelnes Kriterium */
     function renderCriterionCard(item, progressHtml) {
-      const area = udocCore.areas.find(a => a.id === item.areaId);
-      const criterion = area ? area.criteria.find(c => c.id === item.criterionId) : null;
+      const criterion = getEffectiveCriterionDef(item.criterionId);
       if (!criterion) return '';
+      const area = udocCore.areas.find(a => a.id === item.areaId)
+        || (state.meta.activeModules || []).flatMap(modId => extensionModules[modId]?.extraAreas || []).find(a => a.id === item.areaId);
 
-      const selected = state.criterionAnswers[item.criterionId];
+      const ans = state.criterionAnswers[item.criterionId];
+      const selected = ans.option;
+      const selectedRelevant = ans.relevant;
+      const begruendung = ans.begruendung;
+      const needsBegruendung = selected === 'beeintraechtigt' || selected === 'nichtbeurteilbar';
 
       const optionBtns = CRITERION_OPTIONS.map(opt => {
         const isSelected = selected === opt.id;
@@ -1869,6 +2621,34 @@
             ${esc(opt.label)}
           </button>`;
       }).join('');
+
+      // Relevanz-Folgefrage (nur bei «beeinträchtigt»)
+      const showRelevanzError = state.ui.mandatoryWarning && selected === 'beeintraechtigt' && selectedRelevant === null;
+      const relevanzHtml = selected === 'beeintraechtigt' ? `
+        <div class="relevanz-box">
+          <p>Ist diese Beeinträchtigung für die vorliegende Entscheidung relevant? <span class="required-star">*</span></p>
+          <div class="relevanz-btns">
+            <button class="relevanz-btn${selectedRelevant === true ? ' active-ja' : ''}"
+              onclick="setCriterionRelevant('${criterion.id}', true)">Ja</button>
+            <button class="relevanz-btn${selectedRelevant === false ? ' active-nein' : ''}"
+              onclick="setCriterionRelevant('${criterion.id}', false)">Nein</button>
+          </div>
+          <div class="field-error" style="display:${showRelevanzError ? 'block' : 'none'}">Bitte beantworten Sie die Relevanzfrage.</div>
+        </div>` : '';
+
+      // Begründungsfeld (immer sichtbar), dynamisches Label
+      const begruendungLabel = needsBegruendung
+        ? 'Begründung <span class="required-star">*</span>'
+        : 'Begründung (optional)';
+      const begruendungHtml = `
+        <div class="begruendung-group">
+          <label>${begruendungLabel}</label>
+          <textarea rows="2" lang="de-CH"
+            placeholder="Kurze klinische Begründung der Beurteilung…"
+            oninput="setCriterionBegruendung('${criterion.id}', this.value)"
+          >${esc(begruendung)}</textarea>
+          <div class="field-error" id="begruendung-field-error" style="display:none">Bitte geben Sie eine Begründung an.</div>
+        </div>`;
 
       const questionsHtml = criterion.guidingQuestions && criterion.guidingQuestions.length ? `
         <details class="guiding-questions" open>
@@ -1892,11 +2672,7 @@
       return `
         ${progressHtml}
 
-        <div class="breadcrumb">
-          <span>${esc(item.areaLabel)}</span>
-          <span class="breadcrumb-sep">›</span>
-          <span style="color:var(--color-primary);font-weight:500">${esc(criterion.label)}</span>
-        </div>
+        ${renderBreadcrumb(item)}
 
         <div class="card">
           <div class="eyebrow">${esc(area ? area.focus : '')}</div>
@@ -1911,6 +2687,8 @@
             <div class="option-buttons">
               ${optionBtns}
             </div>
+            ${relevanzHtml}
+            ${begruendungHtml}
           </div>
         </div>
 
@@ -1924,7 +2702,11 @@
             Zur Übersicht
           </button>
           <button class="btn btn-primary" onclick="goNext()">
-            ${state.nav.flatIndex < schedule.length - 1 ? 'Weiter' : 'Weiter →'}
+            ${(function() {
+              if (state.nav.flatIndex < schedule.length - 1) return 'Weiter';
+              const hasBeeintraechtigt = Object.values(state.criterionAnswers).some(a => a.option === 'beeintraechtigt');
+              return hasBeeintraechtigt ? 'Zur Beurteilung' : 'Zur Übersicht';
+            })()}
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>`;
@@ -1932,7 +2714,10 @@
 
     /* Bereichszusammenfassung */
     function renderAreaSummaryCard(item, progressHtml) {
-      const area = udocCore.areas.find(a => a.id === item.areaId);
+      const area = udocCore.areas.find(a => a.id === item.areaId)
+        || (state.meta.activeModules || []).flatMap(modId =>
+             extensionModules[modId]?.extraAreas || []
+           ).find(a => a.id === item.areaId);
       if (!area) return '';
 
       const areaSummary = state.areaSummaries[item.areaId];
@@ -1957,11 +2742,7 @@
       return `
         ${progressHtml}
 
-        <div class="breadcrumb">
-          <span>${esc(item.areaLabel)}</span>
-          <span class="breadcrumb-sep">›</span>
-          <span style="color:var(--color-primary);font-weight:500">Bereichszusammenfassung</span>
-        </div>
+        ${renderBreadcrumb(item)}
 
         <div class="card">
           <div class="eyebrow">Zusammenfassung</div>
@@ -1979,9 +2760,9 @@
           </div>
 
           <div class="form-group" style="margin-top:var(--spacing-lg);margin-bottom:0">
-            <label>Beschreibung der Beeinträchtigungen <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
-            <textarea
-              placeholder="Ergänzende klinische Beschreibung der beobachteten Beeinträchtigungen in diesem Bereich…"
+            <label>Kommentar <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
+            <textarea lang="de-CH"
+              placeholder="Ergänzende klinische Anmerkungen zu diesem Bereich…"
               oninput="setAreaDescription('${area.id}',this.value)"
               rows="4">${esc(description)}</textarea>
           </div>
@@ -1997,7 +2778,11 @@
             Zur Übersicht
           </button>
           <button class="btn btn-primary" onclick="goNext()">
-            ${isLast ? 'Beurteilung' : 'Weiter'}
+            ${(function() {
+              if (!isLast) return 'Weiter';
+              const hasBeeintraechtigt = Object.values(state.criterionAnswers).some(a => a.option === 'beeintraechtigt');
+              return hasBeeintraechtigt ? 'Zur Beurteilung' : 'Zur Übersicht';
+            })()}
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>`;
@@ -2007,7 +2792,6 @@
     function renderAssessmentView() {
       const s = state.samwAlgorithm;
 
-      // Hilfsfunktion: Ja/Nein-Toggle-Buttons (Schritte 2 und 3)
       const btnStyle = 'padding:6px 16px;border-radius:4px;border:1px solid var(--color-border);cursor:pointer;font-size:13px;font-weight:500;';
       const yesno = (step, current) => {
         const selYes = current === 'ja'   ? 'background:var(--color-accent);color:#fff;border-color:var(--color-accent);' : 'background:#fff;color:var(--color-text);';
@@ -2019,79 +2803,62 @@
           </div>`;
       };
 
-      // Schritt-1-Buttons (drei Optionen)
-      const step1Buttons = () => {
-        const selJa    = s.step1 === 'ja'    ? 'background:var(--color-accent);color:#fff;border-color:var(--color-accent);' : 'background:#fff;color:var(--color-text);';
-        const selNein  = s.step1 === 'nein'  ? 'background:var(--color-primary);color:#fff;border-color:var(--color-primary);' : 'background:#fff;color:var(--color-text);';
-        const selKeine = s.step1 === 'keine' ? 'background:var(--color-accent);color:#fff;border-color:var(--color-accent);' : 'background:#fff;color:var(--color-text);';
-        return `
-          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-            <button style="${btnStyle}${selJa}"    onclick="setSamwStep(1,'ja')">Ja</button>
-            <button style="${btnStyle}${selNein}"  onclick="setSamwStep(1,'nein')">Nein</button>
-            <button style="${btnStyle}${selKeine}" onclick="setSamwStep(1,'keine')">Keine Beeinträchtigungen</button>
-          </div>`;
-      };
-
-      // Ergebnis-Note-Stil
       const resultBox = (txt) => `<div class="info-box" style="margin-top:10px">${txt}</div>`;
+
+      // Liste der beeinträchtigten Kriterien
+      const beeintrList = schedule.filter(item =>
+        item.type === 'criterion' && state.criterionAnswers[item.criterionId]?.option === 'beeintraechtigt'
+      );
+      const beeintrHtml = beeintrList.length ? `
+        <ul style="margin:8px 0 0;padding-left:1.2em;font-size:13px;color:var(--color-text)">
+          ${beeintrList.map(item => {
+            const def = getEffectiveCriterionDef(item.criterionId);
+            return `<li>${esc(def ? def.label : item.criterionId)}</li>`;
+          }).join('')}
+        </ul>` : '';
 
       let stepsHtml = `
         <div style="margin-bottom:var(--spacing-lg)">
-          <div class="eyebrow">Schritt 1 von 3</div>
+          <div class="eyebrow">Schritt 1 von 2</div>
           <p style="margin-top:6px;font-size:14px;font-weight:500">
-            Sind die Kriterien, hinsichtlich derer Beeinträchtigungen bestehen, für die spezifische Entscheidung relevant?
+            Signifikanz der Beeinträchtigungen
           </p>
-          ${step1Buttons()}
-          ${s.step1 === 'nein'  ? resultBox('Ergebnis (Schritt 1): <strong>Urteilsfähig</strong> — die bestehenden Beeinträchtigungen sind für diese Entscheidung nicht relevant.') : ''}
-          ${s.step1 === 'keine' ? resultBox('Ergebnis (Schritt 1): <strong>Urteilsfähig</strong> — keine relevanten Beeinträchtigungen festgestellt.') : ''}
+          <p style="font-size:13px;color:var(--color-text-muted);margin-top:4px">
+            Sind die festgestellten Beeinträchtigungen in Bezug auf die vorliegende Entscheidung signifikant?
+          </p>
+          ${beeintrHtml}
+          ${yesno(2, s.step2)}
+          ${s.step2 === 'nein' ? resultBox('<strong>Hinweis:</strong> Die Beeinträchtigungen sind nicht signifikant.') : ''}
         </div>`;
 
-      if (s.step1 === 'ja') {
+      if (s.step2 === 'ja') {
         stepsHtml += `
           <div style="margin-bottom:var(--spacing-lg)">
-            <div class="eyebrow">Schritt 2 von 3</div>
+            <div class="eyebrow">Schritt 2 von 2</div>
             <p style="margin-top:6px;font-size:14px;font-weight:500">
-              Sind die Beeinträchtigungen signifikant?
+              Aufgewogen durch intakte Fähigkeiten
             </p>
-            ${yesno(2, s.step2)}
-            ${s.step2 === 'nein' ? resultBox('Ergebnis (Schritt 2): <strong>Urteilsfähig</strong> — die Beeinträchtigungen sind nicht signifikant.') : ''}
-          </div>`;
-      }
-
-      if (s.step1 === 'ja' && s.step2 === 'ja') {
-        stepsHtml += `
-          <div style="margin-bottom:var(--spacing-lg)">
-            <div class="eyebrow">Schritt 3 von 3</div>
-            <p style="margin-top:6px;font-size:14px;font-weight:500">
-              Werden die Beeinträchtigungen durch intakte Fähigkeiten aufgewogen?
+            <p style="font-size:13px;color:var(--color-text-muted);margin-top:4px">
+              Werden die signifikanten Beeinträchtigungen durch intakte Fähigkeiten in ausreichendem Mass aufgewogen?
             </p>
             ${yesno(3, s.step3)}
-            ${s.step3 === 'ja'   ? resultBox('Ergebnis (Schritt 3): <strong>Urteilsfähig</strong> — intakte Fähigkeiten wiegen die Beeinträchtigungen auf.') : ''}
-            ${s.step3 === 'nein' ? resultBox('Ergebnis (Schritt 3): <strong>Urteilsunfähig</strong> — die Beeinträchtigungen werden nicht aufgewogen.') : ''}
+            ${s.step3 === 'ja'   ? resultBox('<strong>Hinweis:</strong> Intakte Fähigkeiten wiegen die Beeinträchtigungen auf.') : ''}
+            ${s.step3 === 'nein' ? resultBox('<strong>Hinweis:</strong> Die Beeinträchtigungen werden nicht ausreichend aufgewogen.') : ''}
           </div>`;
       }
 
-      const VERDICT_LABELS = { urteilsfaehig:'Urteilsfähig', urteilsunfaehig:'Urteilsunfähig' };
-      const suggestedHtml = s.suggestedVerdict ? `
-        <div style="margin-top:var(--spacing-md);padding:12px 16px;border-radius:var(--radius-sm);border:2px solid var(--color-accent);background:var(--color-accent-light)">
-          <span style="font-size:12px;font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--color-accent)">Algorithmus-Ergebnis</span><br>
-          <span style="font-size:15px;font-weight:600;color:var(--color-primary)">${esc(VERDICT_LABELS[s.suggestedVerdict] || s.suggestedVerdict)}</span>
-          <span style="font-size:12px;color:var(--color-text-muted);display:block;margin-top:4px">Das Gesamturteil im nächsten Schritt kann abweichen.</span>
-        </div>` : '';
-
       return `
-        <h1>Beurteilung</h1>
+        <h1>Klinische Einschätzung</h1>
         <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:var(--spacing-lg)">
-          SAMW-Entscheidungsalgorithmus — geführte Einschätzung in drei Schritten.
+          Einschätzung nach SAMW-Leitlinien auf Grundlage der erfassten Kriterien.
         </p>
 
         <div class="card">
-          <h3>Entscheidungsalgorithmus</h3>
+          <h3>SAMW-Algorithmus</h3>
           <p style="font-size:13px;color:var(--color-text-muted);margin-top:6px;margin-bottom:var(--spacing-lg)">
-            Beantworten Sie die Fragen auf Grundlage Ihrer bisherigen Beobachtungen. Das Ergebnis wird als Vorschlag ins Gesamturteil übernommen und bleibt überschreibbar.
+            Beantworten Sie die Fragen auf Grundlage Ihrer klinischen Beobachtungen. Das Gesamturteil bleibt im nächsten Schritt frei wählbar.
           </p>
           ${stepsHtml}
-          ${suggestedHtml}
         </div>
 
         <div class="nav-bar">
@@ -2120,14 +2887,15 @@
         // Kriteriumszeilen
         area.criteria.forEach(c => {
           const ans = state.criterionAnswers[c.id];
-          const pill = ans ? `<span class="status-pill pill-${ans}">${esc(CRITERION_OPTIONS.find(o => o.id === ans)?.label || ans)}</span>`
+          const opt = ans ? ans.option : null;
+          const pill = opt ? `<span class="status-pill pill-${opt}">${esc(CRITERION_OPTIONS.find(o => o.id === opt)?.label || opt)}</span>`
                           : `<span class="status-pill pill-offen">offen</span>`;
           // Link zum Kriterium
           const schedIdx = schedule.findIndex(s => s.type === 'criterion' && s.criterionId === c.id);
           tableRows += `
             <tr>
               <td>
-                <a href="#" onclick="event.preventDefault();goToView('criterion',${schedIdx})" style="color:var(--color-accent);text-decoration:none;font-size:13px">${esc(c.label)}</a>
+                <button class="btn btn-ghost btn-sm" style="color:var(--color-accent);font-weight:normal;text-align:left;padding:0" onclick="goToView('criterion',${schedIdx})">${esc(c.label)}</button>
               </td>
               <td>${pill}</td>
             </tr>`;
@@ -2143,7 +2911,7 @@
         tableRows += `
           <tr class="summary-row">
             <td>
-              <a href="#" onclick="event.preventDefault();goToView('criterion',${summIdx})" style="color:var(--color-text-muted);text-decoration:none;font-size:13px">Bereichszusammenfassung</a>
+              <button class="btn btn-ghost btn-sm" style="color:var(--color-text-muted);font-weight:normal;text-align:left;padding:0" onclick="goToView('criterion',${summIdx})">Bereichszusammenfassung</button>
             </td>
             <td>${summPill}</td>
           </tr>`;
@@ -2183,7 +2951,7 @@
           </div>
           <div class="form-group">
             <label>Spezifizierung / Ergänzung <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
-            <textarea placeholder="Nähere Bezeichnung der Ursache oder ergänzende Hinweise…"
+            <textarea lang="de-CH" placeholder="Nähere Bezeichnung der Ursache oder ergänzende Hinweise…"
               oninput="setConclusion('legalDetail',this.value)"
               rows="3">${esc(state.conclusion.legalDetail)}</textarea>
           </div>`;
@@ -2210,6 +2978,17 @@
         </div>
 
         <div class="card">
+          <h3>Bereichsübersicht</h3>
+          <div style="display:flex;justify-content:space-around;padding:var(--spacing-md) 0;flex-wrap:wrap;gap:var(--spacing-md)">
+            ${udocCore.areas.map(area => `
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+                ${renderAreaChart(area.id, {})}
+                <div style="font-size:12px;font-family:var(--font-mono);text-align:center;color:var(--color-text-muted)">${esc(area.label)}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+
+        <div class="card">
           <h3>Gesamturteil</h3>
           <div style="margin-top:var(--spacing-md)">
             ${verdictOptions}
@@ -2217,7 +2996,7 @@
 
           <div class="form-group" style="margin-top:var(--spacing-lg);margin-bottom:0">
             <label>Abschliessende Begründung <span style="font-weight:400;color:var(--color-text-muted)">(optional)</span></label>
-            <textarea
+            <textarea lang="de-CH"
               placeholder="Klinische Begründung des Gesamturteils. Bitte gehen Sie ggf. ein auf: unterstützende Massnahmen zur Förderung der Urteilsfähigkeit, Notwendigkeit weiterführender Abklärungen, Einholung einer Zweitmeinung, empfohlener Zeitpunkt einer Reevaluation."
               rows="5"
               oninput="setConclusion('reasoning',this.value)">${esc(state.conclusion.reasoning)}</textarea>
@@ -2234,6 +3013,10 @@
               Ich bestätige, meine eigenen Werthaltungen und mögliche Interessenkonflikte kritisch reflektiert zu haben und keine Befangenheit zu erkennen, die die vorliegende Beurteilung wesentlich beeinflusst hätte.
             </label>
           </div>
+        </div>
+
+        <div id="mandatory-warning" class="pflicht-hinweis" style="${state.ui.mandatoryWarning ? 'margin-top:var(--spacing-md)' : 'display:none;margin-top:var(--spacing-md)'}">
+          Bitte für alle als «beeinträchtigt» oder «nicht beurteilbar» bewerteten Kriterien eine Begründung eingeben sowie für «beeinträchtigt»-Bewertungen die Relevanzfrage beantworten.
         </div>
 
         <div class="action-bar">
@@ -2260,16 +3043,26 @@
         </div>`;
     }
 
-    /* Fortschrittsanzeige */
+    /* Fortschrittsanzeige (typ-getrennte Zählung) */
     function renderProgress() {
-      const current = state.nav.flatIndex + 1;
-      const total = schedule.length;
       const item = getEffectiveCriterion();
-      const typeLabel = item && item.type === 'areaSummary' ? 'Bereichszusammenfassung' : 'Kriterium';
-      return `
-        <div class="progress-counter" style="margin-bottom:var(--spacing-md)">
-          ${typeLabel} ${current} von ${total}
-        </div>`;
+      const isSummary = item && item.type === 'areaSummary';
+
+      const totalCrit = schedule.filter(s => s.type === 'criterion').length;
+      const totalSumm = schedule.filter(s => s.type === 'areaSummary').length;
+
+      if (isSummary) {
+        const summIdx = schedule.slice(0, state.nav.flatIndex + 1)
+                                .filter(s => s.type === 'areaSummary').length;
+        return `<div class="progress-counter" style="margin-bottom:var(--spacing-md)">
+                  Bereichszusammenfassung ${summIdx} von ${totalSumm}
+                </div>`;
+      }
+      const critIdx = schedule.slice(0, state.nav.flatIndex + 1)
+                              .filter(s => s.type === 'criterion').length;
+      return `<div class="progress-counter" style="margin-bottom:var(--spacing-md)">
+                Kriterium ${critIdx} von ${totalCrit}
+              </div>`;
     }
 
     /* Kopfzeile-Metadaten aktualisieren */
@@ -2280,7 +3073,9 @@
       const patientName = [m.patientFirstName, m.patientLastName].filter(Boolean).join(' ');
       const patientDisplay = patientName || m.patientRef;
       const pat = patientDisplay ? `<div class="meta-item"><span class="meta-label">Person</span><span>${esc(patientDisplay)}</span></div>` : '';
-      const ex  = m.examiners ? `<div class="meta-item"><span class="meta-label">Untersucher/in</span><span>${esc(m.examiners.split('\n')[0].slice(0, 40))}</span></div>` : '';
+      const exRaw = m.examiners ? m.examiners.split('\n')[0] : '';
+      const exDisplay = exRaw.length > 40 ? exRaw.slice(0, 40) + '…' : exRaw;
+      const ex  = exDisplay ? `<div class="meta-item"><span class="meta-label">Untersucher/in</span><span>${esc(exDisplay)}</span></div>` : '';
       const dat = m.assessmentDate ? `<div class="meta-item"><span class="meta-label">Datum</span><span>${esc(m.assessmentDate)}</span></div>` : '';
       meta.innerHTML = pat + ex + dat;
     }
@@ -2293,17 +3088,55 @@
       const text = state.liveText.text || '';
       const edited = state.liveText.edited;
 
+      // Fortschritt berechnen (nur criterion-Items, keine areaSummary)
+      const critItems = schedule.filter(it => it.type === 'criterion');
+      const totalCrit = critItems.length;
+      const doneCrit = critItems.filter(it =>
+        state.criterionAnswers[it.criterionId]?.option
+      ).length;
+      const pct = totalCrit > 0 ? Math.round((doneCrit / totalCrit) * 100) : 0;
+
+      // Kompakte Charts — Kern-Bereiche
+      const kurzlabels = { erkenntnis: 'Erk.', wertung: 'Wert.', willens: 'Willens.' };
+      const coreCharts = udocCore.areas.map(area =>
+        `<div class="live-chart-cell">
+          ${renderAreaChart(area.id, { compact: true })}
+          <div class="live-chart-label">${kurzlabels[area.id] || area.label}</div>
+        </div>`
+      ).join('');
+      // Kompakte Charts — aktive Erweiterungsmodule (je ein aggregierter Kreis)
+      const moduleCharts = (state.meta.activeModules || []).map(modId => {
+        const mod = extensionModules[modId];
+        if (!mod) return '';
+        const shortLabel = modId.toUpperCase();
+        return `<div class="live-chart-cell">
+          ${renderModuleChart(modId, { compact: true })}
+          <div class="live-chart-label" title="${esc(mod.label)}">${shortLabel}</div>
+        </div>`;
+      }).join('');
+      const chartsHtml = coreCharts + moduleCharts;
+
       if (!document.getElementById('live-text-main')) {
         // Erstaufbau
         body.style.display = 'flex';
         body.style.flexDirection = 'column';
         body.style.height = '100%';
         body.innerHTML = `
+          <div class="live-progress-wrap" id="live-progress-wrap">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+              <span class="live-chart-label">Fortschritt</span>
+              <span class="live-chart-label">${doneCrit}/${totalCrit}</span>
+            </div>
+            <div style="height:6px;background:var(--color-border);border-radius:3px;overflow:hidden">
+              <div class="live-progress-fill" id="live-progress-fill" style="width:${pct}%"></div>
+            </div>
+          </div>
+          <div class="live-charts-row" id="live-charts-row">${chartsHtml}</div>
           <div id="live-regen-bar" style="display:${edited ? 'flex' : 'none'};align-items:center;gap:8px;padding:6px 12px;background:#fff8e6;border-bottom:1px solid var(--color-amber);font-size:12px;color:#7a5a00;flex-shrink:0">
             <span>Manuell bearbeitet — Auto-Generierung pausiert.</span>
             <button class="btn btn-ghost btn-sm" onclick="regenLiveText()" style="margin-left:auto;color:var(--color-primary)">Endbefund generieren</button>
           </div>
-          <textarea id="live-text-main"
+          <textarea id="live-text-main" lang="de-CH"
             oninput="onMainLiveTextInput(this.value)"
             spellcheck="true"
             style="flex:1;width:100%;resize:none;border:none;outline:none;padding:12px;font-size:12px;font-family:var(--font-sans);line-height:1.6;background:#fff;color:var(--color-text)"
@@ -2313,6 +3146,16 @@
         const ta = document.getElementById('live-text-main');
         if (ta && document.activeElement !== ta) ta.value = text;
         updateLiveRegenBtnVisibility();
+        // Fortschritt + Charts aktualisieren
+        const fill = document.getElementById('live-progress-fill');
+        if (fill) fill.style.width = pct + '%';
+        const wrap = document.getElementById('live-progress-wrap');
+        if (wrap) {
+          const spans = wrap.querySelectorAll('.live-chart-label');
+          if (spans[1]) spans[1].textContent = doneCrit + '/' + totalCrit;
+        }
+        const chartsRow = document.getElementById('live-charts-row');
+        if (chartsRow) chartsRow.innerHTML = chartsHtml;
       }
     }
 
@@ -2322,6 +3165,7 @@
 
     /* Befund in die Zwischenablage kopieren (inkl. Kopfblock) */
     async function copyBefundToClipboard() {
+      if (checkAndWarnMandatory()) return;
       // Aktuellen Textfeldinhalt bevorzugen (enthält ggf. manuelle Bearbeitungen)
       const ta = document.getElementById('live-text-main');
       const text = (ta ? ta.value : null) || state.liveText.text || generateFullLiveText();
@@ -2381,7 +3225,7 @@
           <p style="font-size:13px;color:var(--color-text-muted);margin-bottom:var(--spacing-md)">
             Bitte markieren Sie den Text und kopieren Sie ihn mit Ctrl+C / Cmd+C.
           </p>
-          <textarea readonly onclick="this.select()">${esc(text)}</textarea>
+          <textarea readonly lang="de-CH" onclick="this.select()">${esc(text)}</textarea>
           <div class="modal-actions">
             <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">Schliessen</button>
           </div>
@@ -2393,6 +3237,11 @@
 
     /* Druckansicht öffnen */
     function openPrintView() {
+      const blockers = getEndbefundBlockers();
+      if (blockers.length > 0) {
+        showEndbefundBlockerWarning(blockers);
+        return;
+      }
       const html = buildPrintDocument();
       const printEl = document.getElementById('print-view');
       printEl.innerHTML = html;
@@ -2417,11 +3266,11 @@
         <div class="print-meta">
           <table>
             <tr><td>Beurteilende Person(en):</td><td>${esc(m.examiners || '—')}</td></tr>
-            <tr><td>Datum der Beurteilung:</td><td>${esc(m.assessmentDate || '—')}</td></tr>
+            <tr><td>Datum der Beurteilung:</td><td>${esc(m.assessmentDate ? formatDateDE(m.assessmentDate) : '—')}</td></tr>
             <tr><td>Ort:</td><td>${esc(m.assessmentLocation || '—')}</td></tr>
             <tr><td style="border-top:0.5pt solid #ddd"></td><td style="border-top:0.5pt solid #ddd"></td></tr>
             ${patientName ? `<tr><td>Patient/in:</td><td>${esc(patientName)}</td></tr>` : ''}
-            ${m.patientDOB     ? `<tr><td>Geburtsdatum:</td><td>${esc(m.patientDOB)}</td></tr>` : ''}
+            ${m.patientDOB     ? `<tr><td>Geburtsdatum:</td><td>${esc(formatDateDE(m.patientDOB))}</td></tr>` : ''}
             ${m.patientRef     ? `<tr><td>Kürzel / Fallnummer:</td><td>${esc(m.patientRef)}</td></tr>` : ''}
             ${m.patientAddress ? `<tr><td>Anschrift:</td><td style="white-space:pre-wrap">${esc(m.patientAddress)}</td></tr>` : ''}
             <tr><td style="border-top:0.5pt solid #ddd"></td><td style="border-top:0.5pt solid #ddd"></td></tr>
@@ -2444,7 +3293,7 @@
               ${m.priorSessions.map((s, i) => `
                 <tr>
                   <td>${i + 1}</td>
-                  <td>${esc(s.date)}</td>
+                  <td>${esc(formatDateDE(s.date))}</td>
                   <td>${esc(s.examiner)}</td>
                   <td>${esc(s.result)}</td>
                 </tr>`).join('')}
@@ -2460,10 +3309,25 @@
         const summLabel = summId ? (area.summaryScale.find(s => s.id === summId)?.label || summId) : '—';
         html += `<div class="print-donut-cell">
           <div class="print-area-title">${esc(area.label)}</div>
-          ${renderAreaChart(area.id)}
+          ${renderAreaChart(area.id, { forPrint: true })}
           <div class="print-area-summary-label">${esc(summLabel)}</div>
         </div>`;
       });
+      // Modul-Bereiche: je Bereich ein Donut
+      for (const modId of (state.meta.activeModules || [])) {
+        const mod = extensionModules[modId];
+        if (!mod || !mod.extraAreas) continue;
+        mod.extraAreas.forEach(area => {
+          const summ = state.areaSummaries[area.id];
+          const summId = summ ? summ.summaryId : null;
+          const summLabel = summId ? (area.summaryScale.find(s => s.id === summId)?.label || summId) : '—';
+          html += `<div class="print-donut-cell">
+            <div class="print-area-title">${esc(area.label)}</div>
+            ${renderAreaChart(area.id, { forPrint: true })}
+            <div class="print-area-summary-label">${esc(summLabel)}</div>
+          </div>`;
+        });
+      }
       html += `</div>`;
 
       // Kriterientabellen pro Bereich
@@ -2474,8 +3338,10 @@
             <tbody>`;
         area.criteria.forEach(c => {
           const ans = state.criterionAnswers[c.id];
-          const ansLabel = ans ? (CRITERION_OPTIONS.find(o => o.id === ans)?.label || ans) : 'offen';
-          html += `<tr><td>${esc(c.label)}</td><td><em>${esc(ansLabel)}</em></td></tr>`;
+          const opt = ans ? ans.option : null;
+          const ansLabel = opt ? (CRITERION_OPTIONS.find(o => o.id === opt)?.label || opt) : 'offen';
+          const showBegruendung = (opt === 'beeintraechtigt' || opt === 'nichtbeurteilbar') && ans.begruendung && ans.begruendung.trim();
+          html += `<tr><td>${esc(getEffectiveCriterionDef(c.id)?.label || c.label)}</td><td><em>${esc(ansLabel)}</em>${showBegruendung ? `<br><span style="font-style:normal;font-size:8pt;color:#444">Begründung: ${esc(ans.begruendung.trim())}</span>` : ''}</td></tr>`;
         });
         html += `</tbody></table>`;
         const summ = state.areaSummaries[area.id];
@@ -2486,16 +3352,45 @@
         if (desc) html += `<div class="print-text" style="margin-top:4pt">${esc(desc)}</div>`;
       });
 
-      // SAMW-Beurteilungsfragen
+      // Erweiterungsmodul-Kriterientabellen
+      const activeModAreas = (state.meta.activeModules || []).flatMap(modId =>
+        extensionModules[modId]?.extraAreas || []
+      );
+      if (activeModAreas.length > 0) {
+        html += `<h2 class="print-area-h2" style="margin-top:14pt">Erweiterungsbereiche</h2>`;
+        activeModAreas.forEach(area => {
+          html += `<h2 class="print-area-h2">${esc(area.label)}</h2>
+            <table>
+              <thead><tr><th>Kriterium</th><th>Beurteilung</th></tr></thead>
+              <tbody>`;
+          area.criteria.forEach(c => {
+            const ans = state.criterionAnswers[c.id];
+            const opt = ans ? ans.option : null;
+            const ansLabel = opt ? (CRITERION_OPTIONS.find(o => o.id === opt)?.label || opt) : 'offen';
+            const showBegruendung = (opt === 'beeintraechtigt' || opt === 'nichtbeurteilbar') && ans.begruendung && ans.begruendung.trim();
+            html += `<tr><td>${esc(c.label)}</td><td><em>${esc(ansLabel)}</em>${showBegruendung ? `<br><span style="font-style:normal;font-size:8pt;color:#444">Begründung: ${esc(ans.begruendung.trim())}</span>` : ''}</td></tr>`;
+          });
+          html += `</tbody></table>`;
+          const summ = state.areaSummaries[area.id];
+          const summId = summ ? summ.summaryId : null;
+          const summLabel = summId ? (area.summaryScale.find(s => s.id === summId)?.label || summId) : 'offen';
+          html += `<p style="margin-bottom:2pt"><strong>Gesamtbeurteilung:</strong> ${esc(summLabel)}</p>`;
+          const desc = summ ? (summ.description || '').trim() : '';
+          if (desc) html += `<div class="print-text" style="margin-top:4pt">${esc(desc)}</div>`;
+        });
+      }
+
+      // SAMW-Klinische Einschätzung — nur drucken, wenn ausgefüllt
       const sa = state.samwAlgorithm;
-      const SAMW_LABELS_PRINT = { ja: 'Ja', nein: 'Nein', keine: 'Keine Beeinträchtigungen' };
-      html += `<h2>Beurteilung (SAMW-Algorithmus)</h2>
-        <div class="samw-box">
-          <div class="samw-step"><strong>Schritt 1:</strong> Sind die beeinträchtigten Kriterien für diese Entscheidung relevant? — ${esc(sa.step1 ? SAMW_LABELS_PRINT[sa.step1] : '—')}</div>
-          ${sa.step1 === 'ja' ? `<div class="samw-step"><strong>Schritt 2:</strong> Sind die Beeinträchtigungen signifikant? — ${esc(sa.step2 ? SAMW_LABELS_PRINT[sa.step2] : '—')}</div>` : ''}
-          ${sa.step1 === 'ja' && sa.step2 === 'ja' ? `<div class="samw-step"><strong>Schritt 3:</strong> Werden die Beeinträchtigungen durch intakte Fähigkeiten aufgewogen? — ${esc(sa.step3 ? SAMW_LABELS_PRINT[sa.step3] : '—')}</div>` : ''}
-          ${sa.suggestedVerdict ? `<div class="samw-step" style="margin-top:6pt"><strong>Algorithmus-Ergebnis:</strong> ${esc(VERDICT_LABELS_PRINT[sa.suggestedVerdict] || sa.suggestedVerdict)}</div>` : ''}
-        </div>`;
+      const SAMW_LABELS_PRINT = { ja: 'Ja', nein: 'Nein' };
+      if (sa.step2) {
+        html += `<div style="margin-top:12pt;border-top:0.5pt solid #ccc;padding-top:8pt"></div>
+          <h2>Klinische Einschätzung</h2>
+          <div class="samw-box">
+            <div class="samw-step"><strong>Signifikanz der Beeinträchtigungen:</strong> ${esc(SAMW_LABELS_PRINT[sa.step2])}</div>
+            ${sa.step2 === 'ja' && sa.step3 ? `<div class="samw-step"><strong>Aufgewogen durch intakte Fähigkeiten:</strong> ${esc(SAMW_LABELS_PRINT[sa.step3])}</div>` : ''}
+          </div>`;
+      }
 
       // Gesamturteil — hervorgehobene Box (E2)
       html += `<h2>Gesamturteil</h2>`;
@@ -2527,7 +3422,7 @@
       if (befund.body.trim()) {
         const patientStrip = [
           patientName || m.patientRef || null,
-          m.patientDOB ? 'geb. ' + m.patientDOB : null,
+          m.patientDOB ? 'geb. ' + formatDateDE(m.patientDOB) : null,
           m.patientRef && patientName ? m.patientRef : null
         ].filter(Boolean).join(' · ');
         html += `<div class="print-befund-section">
@@ -2537,11 +3432,23 @@
         </div>`;
       }
 
-      // Patientenorientierte Information
+      // Patientenorientierte Information (dynamisch je nach aktiven Modulen)
+      const coreAreaLabels = 'Erkenntnisfähigkeit, Wertungsfähigkeit sowie Willensbildung und -umsetzung';
+      const activeModIds = state.meta.activeModules || [];
+      let assessmentMethodText;
+      if (activeModIds.length === 0) {
+        assessmentMethodText = 'Die Beurteilung erfolgte anhand von drei Bereichen mit je vier Kriterien: ' + coreAreaLabels + '.';
+      } else {
+        const modLabels = activeModIds
+          .map(modId => extensionModules[modId]?.label)
+          .filter(Boolean)
+          .join(', ');
+        assessmentMethodText = 'Die Beurteilung erfolgte anhand der etablierten Kriterien zur Beurteilung der Urteilsfähigkeit (' + coreAreaLabels + '), ergänzt um kontextspezifische Bereiche zu ' + modLabels + '.';
+      }
       html += `
         <div class="patient-info-box">
           <strong>Information zur Dokumentation:</strong><br>
-          Diese Dokumentation hält fest, wie die Urteilsfähigkeit hinsichtlich der vorliegenden Entscheidung beurteilt wurde. Die Beurteilung erfolgte anhand von drei Bereichen mit je vier Kriterien: Erkenntnisfähigkeit, Wertungsfähigkeit sowie Willensbildung und -umsetzung. Das Ergebnis bezieht sich ausschliesslich auf die dokumentierte Entscheidungssituation und ist nicht als allgemeine Aussage über die Persönlichkeit oder Kompetenz der untersuchten Person zu verstehen.
+          Diese Dokumentation hält fest, wie die Urteilsfähigkeit hinsichtlich der vorliegenden Entscheidung beurteilt wurde. ${esc(assessmentMethodText)} Das Ergebnis bezieht sich ausschliesslich auf die dokumentierte Entscheidungssituation und ist nicht als allgemeine Aussage über die Persönlichkeit oder Kompetenz der untersuchten Person zu verstehen.
         </div>`;
 
       // Persönliche Erklärung
@@ -2552,15 +3459,17 @@
       }
 
       // Unterschriftsfelder — Ort + Datum aus state (D3)
-      const sigName = m.examiners ? m.examiners.split('\n')[0] : 'Beurteilende Person';
-      const sigLocation = [m.assessmentLocation, m.assessmentDate].filter(Boolean).join(', ');
+      const sigName = m.examiners
+        ? m.examiners.split('\n').map(l => esc(l.trim())).filter(Boolean).join('<br>')
+        : 'Beurteilende Person';
+      const sigLocation = [m.assessmentLocation, m.assessmentDate ? formatDateDE(m.assessmentDate) : null].filter(Boolean).join(', ');
       html += `
         <div class="sig-block" style="margin-top:16pt">
           <table style="border:none;width:100%">
             <tr>
               <td style="border:none;padding:0;width:55%;vertical-align:bottom">
                 <div class="sig-line"></div>
-                <p style="font-size:8pt;color:#666;margin-top:3pt">${esc(sigName)}</p>
+                <p style="font-size:8pt;color:#666;margin-top:3pt">${sigName}</p>
               </td>
               <td style="border:none;padding:0;width:10%"></td>
               <td style="border:none;padding:0;width:35%;vertical-align:bottom">
@@ -2587,6 +3496,15 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    /* ISO-Datum (YYYY-MM-DD) in Schweizer/deutsches Format (DD.MM.YYYY).
+       Fallback: ursprünglichen String zurückgeben, wenn nicht parsebar. */
+    function formatDateDE(iso) {
+      if (!iso || typeof iso !== 'string') return iso || '';
+      const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!m) return iso;
+      return m[3] + '.' + m[2] + '.' + m[1];
     }
 
     /* ============================================================
